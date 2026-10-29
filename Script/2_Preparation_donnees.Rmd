@@ -121,7 +121,7 @@ for(nom in names(SN)){
 ```{r warning=FALSE}
 #table contenant les stations suivies en Normandie
 # A adapter selon le chemin du fichier d'entrée et son format
-suiviCARHYCE_REFENTIEL <- read_excel("R:/Public/04_SRC/CARHYCE/000_Référentiel_CARHYCE/suiviCARHYCE_REFENTIEL.xlsx", 
+referentiel_stations <- read_excel("R:/Public/04_SRC/CARHYCE/000_Référentiel_CARHYCE/suiviCARHYCE_REFENTIEL.xlsx", 
                                     skip = 1, n_max = 100) %>% 
   #sélectionner les variables qui nous interessent
   select(code_sandre=`Code Sandre`,
@@ -132,12 +132,24 @@ suiviCARHYCE_REFENTIEL <- read_excel("R:/Public/04_SRC/CARHYCE/000_Référentiel
   distinct()
 
 #objet contenant les codes des stations étudiées
-mes_codes_stations <- unique(suiviCARHYCE_REFENTIEL$code_sandre)
+mes_codes_stations <- unique(referentiel_stations$code_sandre)
 
 saveRDS(mes_codes_stations,
         here("Data/clean_data", "codes_stations_suivies.rds"))
 ```
-
+  
+  
+**Aperçu de la table referentiel_stations**
+```{r apercu_table_referentiel, message=FALSE, warning=FALSE, echo=FALSE}
+DT::datatable(
+  head(referentiel_stations, 10),
+  options = list(
+    scrollX = TRUE,
+    pageLength = 5
+  ),
+  rownames = FALSE
+)
+```
 
 ## E. Création de la table commune
 Afin de vérifier que l'import à fonctionné, on va d'abord créer une table contenant les informations des stations retenues. Cela permet de vérifier que les doublons ont bien été retirés. 
@@ -170,7 +182,7 @@ Table_stations_etude <- STATION_MESURE %>%
     Region= "Normandie")%>% 
   filter(Code_station_SANDRE %in% mes_codes_stations) %>% 
   distinct() %>% 
-  left_join(suiviCARHYCE_REFENTIEL,
+  left_join(referentiel_stations,
             by=c("Code_station_SANDRE"="code_sandre"))
 ```
 

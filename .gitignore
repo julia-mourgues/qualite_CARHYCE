@@ -5,7 +5,6 @@
 .Renviron
 *.gpkg
 *.pdf
-*.png
 *.jpg
 *.RData
 *.rda

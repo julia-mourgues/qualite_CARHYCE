@@ -9,21 +9,38 @@ library(tidyverse)
 library(readxl)
 library(sf)
 library(writexl)
+library(DT)
 ```
 
 # 1. Chargement des données
 
 ```{r}
 # Référentiel des stations suivies en Normandie
-suiviCARHYCE_REFENTIEL <- read_excel("R:/Public/04_SRC/CARHYCE/000_Référentiel_CARHYCE/suiviCARHYCE_REFENTIEL.xlsx", 
-  skip = 1, 
+#cette table doit contenir au moins les codes des stations suivies
+referentiel_stations <- read_excel("R:/Public/04_SRC/CARHYCE/000_Référentiel_CARHYCE/suiviCARHYCE_REFENTIEL.xlsx", 
+  skip = 1, #on évite la première ligne car dans notre fichier il s'agit d'un titre
   n_max = 100) %>% 
-  select(code_sandre=`Code Sandre`) %>% 
+  #sélectionner les code sandre des stations
+  select(code_sandre=`Code Sandre`) %>%
+  #détecter la présence de texte et le supprimer
   filter(str_detect(code_sandre, "\\d"))%>% 
+  #supprimer les doublons
   distinct()
 
 # Objet contenant les stations étudiées en Normandie
-mes_codes_stations <- unique(suiviCARHYCE_REFENTIEL$code_sandre)
+mes_codes_stations <- unique(referentiel_stations$code_sandre)
+```
+
+**Aperçu de la table referentiel_stations**
+```{r apercu_table_referentiel, message=FALSE, warning=FALSE, echo=FALSE}
+DT::datatable(
+  head(referentiel_stations, 10),
+  options = list(
+    scrollX = TRUE,
+    pageLength = 5
+  ),
+  rownames = FALSE
+)
 ```
 
 ```{r}
@@ -78,34 +95,4 @@ write.csv2(
 )
 ```
 
-## Table Vérification de niveau A
-```{r}
-#Sauvegarder au format csv
-verif_niv_b <- carhyce_verif_niv_b_20260902 %>%
-  filter(code_station %in% mes_codes_stations) %>%
-  distinct() %>%
-  select(
-    "code_station",
-    "code_point_de_prelevement",
-    "localisation",
-    "departement",
-    "identifiant_operation",
-    "date_operation",
-    "numero_point-transect",
-    "rive_berge",
-    "variable_testee",
-    "resultat_de_test",
-    "numero_granulo"
-  )
-
-names(verif_niv_b)
-```
-
-```{r}
-write.csv2(
-  verif_niv_b,
-  "R:/Public/04_SRC/CARHYCE/CDD/verif_niv_b_20260903_nor.csv",
-  row.names = FALSE
-)
-```
 

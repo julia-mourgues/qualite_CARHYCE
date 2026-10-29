@@ -122,7 +122,8 @@ for(nom in names(SN)){
 #table contenant les stations suivies en Normandie
 # A adapter selon le chemin du fichier d'entrée et son format
 referentiel_stations <- read_excel("R:/Public/04_SRC/CARHYCE/000_Référentiel_CARHYCE/suiviCARHYCE_REFENTIEL.xlsx", 
-                                    skip = 1, n_max = 100) %>% 
+                                    skip = 1, #on évite la première ligne car dans notre fichier il s'agit d'un titre
+                                   n_max = 100) %>% 
   #sélectionner les variables qui nous interessent
   select(code_sandre=`Code Sandre`,
          reseau= `Réseaux`) %>% 

@@ -23,10 +23,9 @@ L'ensemble du travail réalisé est fait sur Rstudio.
 Pour commencer, il faut créer un dossier en local qui va accueillir notre projet .R nommé **"qualite_CARHYCE"**.  
 Dans ce dossier, créer les dossiers suivants:<br>
 - Data <br>
-- Output <br>
 - R <br>
-- Report <br>
 - Script <br>
+- fiches_qualite_stations <br>
 
 Dans le dossier **"Data"**, créer les sous-dossiers **"export_03"**, **"export_04"** et **"clean_data"**.  
 
@@ -120,12 +119,19 @@ for(nom in names(SN)){
 
 ## D. Chargement des stations étudiées en Normandie
 ```{r warning=FALSE}
+#table contenant les stations suivies en Normandie
+# A adapter selon le chemin du fichier d'entrée et son format
 suiviCARHYCE_REFENTIEL <- read_excel("R:/Public/04_SRC/CARHYCE/000_Référentiel_CARHYCE/suiviCARHYCE_REFENTIEL.xlsx", 
                                     skip = 1, n_max = 100) %>% 
-  select(code_sandre=`Code Sandre`) %>% 
+  #sélectionner les variables qui nous interessent
+  select(code_sandre=`Code Sandre`,
+         reseau= `Réseaux`) %>% 
+  #garder seulement les cellules contenant des codes 
+  #(nous avons constaté la présence de texte dans certaines cellules)
   filter(str_detect(code_sandre, "\\d"))%>% 
   distinct()
 
+#objet contenant les codes des stations étudiées
 mes_codes_stations <- unique(suiviCARHYCE_REFENTIEL$code_sandre)
 
 saveRDS(mes_codes_stations,
@@ -139,11 +145,19 @@ Afin de vérifier que l'import à fonctionné, on va d'abord créer une table co
 Table_stations_etude <- STATION_MESURE %>% 
   rename(Code_station_SANDRE = SME_CD_STATION_MESURE_EAUX_SURFACE) %>% 
   mutate( 
+    #créer la variable "libelle_bassin"
+    # à adapter selon la région
     Libelle_bassin = recode(
       substr(Code_station_SANDRE, 1, 2),
+      #si les deux premiers chiffres du code station sont "03" alors on attribue
+      #le bassin "Seine-Normandie"
       "03" = "Seine-Normandie",
+      #si les deux premiers chiffres du code station sont "04" alors on attribue
+      #le bassin "Loire-Bretagne"
       "04" = "Loire-Bretagne",
       .default = NA_character_),
+    
+    #créer une variable contenant le nom des départements
     Libelle_departement = recode(
       SME_CD_DEPARTEMENT,
       "14" = "Calvados",
@@ -155,11 +169,15 @@ Table_stations_etude <- STATION_MESURE %>%
       .default = NA_character_),
     Region= "Normandie")%>% 
   filter(Code_station_SANDRE %in% mes_codes_stations) %>% 
-  distinct()
+  distinct() %>% 
+  left_join(suiviCARHYCE_REFENTIEL,
+            by=c("Code_station_SANDRE"="code_sandre"))
 ```
 
 ```{r}
 #Enregistrer les coordonnées de nos stations sous forme de Geopackage
+# ce fichier sera utilisé lors de la valorisation des données
+# il n'est pas nécessaire pour générer les fiches de mise en qualité
 stations_CARHYCE_sf <- st_as_sf(
   Table_stations_etude,
   coords = c("SME_COORD_X_STATION_MESURE_EAUX_SURFACE", "SME_COORD_Y_STATION_MESURE_EAUX_SURFACE"),
@@ -190,6 +208,7 @@ A présent nous pouvons mettre en forme nos données en effectuant les différen
 
 ```{r warning=FALSE}
 Table_ope_transect_point <- Table_stations_etude %>%
+  #ajouter le libelle du type de projection des coordonnées
   left_join(TYPE_PROJECTION %>% 
               select(TPR_CODE,TPR_LIBELLE),
               by=c("SME_PROJ_STATION_MESURE_EAUX_SURFACE"="TPR_CODE")) %>% 
@@ -366,6 +385,8 @@ Table_transect_facies_berge <- Table_stations_etude %>%
       by=c("Code_station_SANDRE" , 
            "code_pt_prelevement",
            "num_operation" ))%>%
+  
+  #JOINTURE 3 = ajouter les informations des berges
   left_join(BERGE %>% 
                   select(BER_ID,
                          BER_TRA_ID,
@@ -373,6 +394,7 @@ Table_transect_facies_berge <- Table_stations_etude %>%
                          SDO_CODE,
                          ERI_CODE),
                 by=c("TRA_ID"="BER_TRA_ID")) %>% 
+  #JOINTURE finales = ajouter les informations des strates, et de la végétation
   left_join(STRATE,
             by=c("BER_ID"="STR_BER_ID")) %>% 
   left_join(TYPE_STRATE,
@@ -386,6 +408,7 @@ Table_transect_facies_berge <- Table_stations_etude %>%
               eve_LIBELLE) %>% 
               mutate(ligne = as.character(row_number())),
             by=c("STR_EVE_ID"="ligne")) %>% 
+  #supprimer les doublons s'il y en a
   distinct() 
 ```
 

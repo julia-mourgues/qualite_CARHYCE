@@ -1,6 +1,6 @@
 ---
 title: "Mise en qualité des données CARHYCE  - station `r params$code_station`"
-author: "DR Normandie - Service Régional Connaissance"
+author: "`r params$structure`"
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output:
   html_document:
@@ -10,8 +10,13 @@ output:
     css: css/ofb_theme_html.css
 params:
   code_station: ""
+  region: ""
+  structure: ""
+  auteurs: ""
 ---
-Auteurs: MOURGUES Julia, RICHARD Benoit
+
+Auteurs: `r params$auteurs`
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, 
                       warning = FALSE,
@@ -37,6 +42,10 @@ library(ggpattern)
 library(ggspatial)
 library(ggbreak)
 ```
+```{r}
+# lecture des données
+base::load(here::here("Data/clean_data", "CARHYCE_data.rda"))
+```
 
 ```{r chargement_fonctions}
 fichiers_R <- list.files(
@@ -49,7 +58,7 @@ invisible(lapply(fichiers_R, source))
 ```
 
 > ⚠ **Préambule** :<br>
-> Les fiches de mise en qualité sont générées pour chaque station suivie en Normandie dans le cadre des protocoles CARHYCE.<br>
+> Les fiches de mise en qualité sont générées pour chaque station suivie en `r params$region` dans le cadre des protocoles CARHYCE.<br>
 > Elles permettent de visualiser les données brutes et de mettre en évidences les éventuelles absences de données, erreurs de saisies ou valeurs incohérentes.<br>
 > Les points de vigilance apparaissent sous forme de message rouge et/ou graphiquement.<br>
 > Les graphiques et cartes sont interactifs. <br>
@@ -187,7 +196,10 @@ dispo_debit(data=table_mesures)
 
 ## A. Nombre de transect par opération
 
-Le nombre de transects attendu par station est de 15, mais un nombre de 13 transects est acceptable. Si ce nombre est inférieur à 13, alors la barre apparaîtra en rouge.
+Le nombre de transects attendu par station est de 15, mais un nombre de 13 transects est acceptable. <br>
+Si ce nombre est supérieur ou égal à 15, la barre correspondant à l'opération apparaît en bleu.<br>
+S'il y a entre 15 et 13 transects alors la barre est jaune. <br>
+Enfin s'il y a moins de 13 transects la barre apparaîtra en rouge.
 
 ```{r table_transects}
 table_transects <- prepare_table_transects(data=Table_ope_transect_point, 
@@ -237,6 +249,14 @@ La ligne verte correspond à la hauteur plein bord du transect, il faut vérifie
 
 ```{r plot_prof_point_tra}
 graph_prof_point(data=table_transects)
+```
+
+
+## E. Strates identifiées et strate dominante
+
+```{r table_dispo_SDO}
+dispo_SDO(data=Table_transect_facies_berge,
+          id_station=params$code_station)
 ```
 
 # 4. Granulométrie

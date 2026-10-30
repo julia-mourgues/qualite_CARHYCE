@@ -1,10 +1,19 @@
 #' Ce script permet de générer les fiches de mise en qualité pour chaque station.
+#' Il faut penser à modifier les objets contenant la région, la structure et 
+#' les auteurs pour adapter la mise en forme des fiches.
+#' Il faut aussi penser à modifier les chemins d'accès des fichiers
 
+library(tidyverse)
+
+# définir les objets
+region_etude <- "Normandie"
+structure_etude <- "DR Normandie - Service Régional Connaissance"
+auteurs_etude <- "MOURGUES Julia, RICHARD Benoit"
 
 # lecture des stations
 
 stations_etude<-readRDS(here::here("Data/clean_data", 
-            "codes_stations_suivies.rds"))
+          "codes_stations_suivies.rds"))
 
 # lecture des données
 base::load(here::here("Data/clean_data", "CARHYCE_data.rda"))
@@ -12,7 +21,7 @@ base::load(here::here("Data/clean_data", "CARHYCE_data.rda"))
 
 #Création des dossiers pour stocker les fichiers créés
 base::dir.create(
-  "R:/Public/04_SRC/CARHYCE/CDD/Mise_en_qualite/Fiches_stations",
+  "R:/Public/04_SRC/CARHYCE/CDD/Mise_en_qualite/Fiches_stations/Fiches_stations_2026",
   recursive = TRUE,
   showWarnings = FALSE
 )
@@ -32,7 +41,25 @@ for (i in base::seq_along(stations_etude)) {
   
   lib<- Table_stations_etude %>% 
     filter(Code_station_SANDRE== id) %>% 
-    select(SME_LB_STATION_MESURE_EAUX_SURFACE)
+    select(SME_LB_STATION_MESURE_EAUX_SURFACE)%>% 
+    distinct()
+  
+  dept <- Table_stations_etude%>% 
+    filter(Code_station_SANDRE== id) %>% 
+    select(SME_CD_DEPARTEMENT) %>% 
+    distinct()
+  
+  dossier_dept <- file.path(
+    "R:/Public/04_SRC/CARHYCE/CDD/Mise_en_qualite/Fiches_stations/Fiches_stations_2026",
+    dept
+  )
+  
+  #ranger les fiches station par département
+  dir.create(
+    dossier_dept,
+    recursive = TRUE,
+    showWarnings = FALSE
+  )
 
   base::message(
     "Génération de la fiche ",
@@ -56,11 +83,14 @@ for (i in base::seq_along(stations_etude)) {
         ),
         output_format = "html_document",
         output_dir =
-          "R:/Public/04_SRC/CARHYCE/CDD/Mise_en_qualite/Fiches_stations",
+          dossier_dept,
         output_file =
           base::paste0("Station-", id,"-",lib, ".html"),
         params = list(
-          code_station = id
+          code_station = id,
+          region= region_etude,
+          structure= structure_etude,
+          auteurs= auteurs_etude
         ),
         clean = TRUE,
         quiet = TRUE

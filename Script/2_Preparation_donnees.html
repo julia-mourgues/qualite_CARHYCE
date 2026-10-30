@@ -4055,7 +4055,7 @@ border-radius: 0px;
 <h1 class="title toc-ignore">Téléchargement et préparation des données
 CARHYCE</h1>
 <h4 class="author">DR Normandie - Service Régional Connaissance</h4>
-<h4 class="date">29 octobre 2026</h4>
+<h4 class="date">30 octobre 2026</h4>
 
 </div>
 
@@ -4067,19 +4067,6 @@ station qui à partir desquelles nous ferons la mise en qualité des
 données.</p>
 <div id="procédure-de-téléchargement-des-données" class="section level1">
 <h1>1. Procédure de téléchargement des données</h1>
-<div id="a.-préparer-lenvironnement-de-travail" class="section level2">
-<h2>A. Préparer l’environnement de travail</h2>
-<p>L’ensemble du travail réalisé est fait sur Rstudio.<br />
-Pour commencer, il faut créer un dossier en local qui va accueillir
-notre projet .R nommé <strong>“qualite_CARHYCE”</strong>.<br />
-Dans ce dossier, créer les dossiers suivants:<br> - Data <br> - R <br> -
-Script <br> - fiches_qualite_stations <br></p>
-<p>Dans le dossier <strong>“Data”</strong>, créer les sous-dossiers
-<strong>“export_03”</strong>, <strong>“export_04”</strong> et
-<strong>“clean_data”</strong>.</p>
-</div>
-<div id="b.-téléchargement-des-données" class="section level2">
-<h2>B. Téléchargement des données</h2>
 <p>Se connecter à la base de données CARHYCE à l’adresse <a href="https://carhyce.eaufrance.fr/login.htm" class="uri">https://carhyce.eaufrance.fr/login.htm</a> <br> Cliquer sur
 <strong>“Accéder aux données”</strong> dans la rubrique “Ressources et
 téléchargements”.</p>
@@ -4105,7 +4092,6 @@ données au format CSV”</strong>. <br></p>
 <p>Le fichier vous a été envoyé par mail.<br> Télécharger le fichier
 .zip reçu puis extraire tous les fichiers qu’il contient à destination
 du dossier “export_04” créé précédemment.</p>
-</div>
 </div>
 </div>
 <div id="import-et-traitement-sur-r" class="section level1">
@@ -4161,12 +4147,11 @@ problèmes.</p>
 <pre><code>## Lecture de SUBSTRAT.csv : méthode avec encoding = &#39;Latin-1&#39; et fill=TRUE</code></pre>
 <pre><code>## Lecture de SUBSTRAT_ADDITIONNEL.csv : méthode avec encoding = &#39;Latin-1&#39; et fill=TRUE</code></pre>
 <pre><code>## Lecture de TRANSECT.csv : méthode avec encoding = &#39;Latin-1&#39; et fill=TRUE</code></pre>
+<pre><code>## Lecture de TRANSECT.csv : échec méthode 1 -&gt; tentative avec fill = FALSE La saisie d&#39;une seule colonne contient des guillemets non valides. L&#39;auto-réparation n&#39;est effective que lorsque ncol&gt;1</code></pre>
 <pre><code>## Warning in data.table::fread(f, sep = &quot;;&quot;, dec = &quot;.&quot;, colClasses = &quot;character&quot;,
-## : Found and resolved improper quoting out-of-sample. First healed line 114:
-## &lt;&lt;&quot;806&quot;;&quot;03223200016001_806&quot;;&quot;12&quot;;&quot;11.22&quot;;&quot;11.2&quot;;&quot;0.53&quot;;&quot;2&quot;;&quot;Pr&lt;e9&gt;sence d&#39;un
-## &quot;bras mort&quot; probablement aliment&lt;e9&gt; en crue.&quot;;&quot;53&quot;;&quot;1&quot;;&quot;5&quot;&gt;&gt;. If the fields
-## are not quoted (e.g. field separator does not appear within any field), try
-## quote=&quot;&quot; to avoid this warning.</code></pre>
+## : Une erreur de guillemets a été détectée et résolue dans les 100 premières
+## lignes. Si les champs ne sont pas entre guillemets (par exemple, le séparateur
+## de champ n&#39;apparaît dans aucun champ), essayez quote=&quot;&quot; pour éviter cet avis.</code></pre>
 <pre><code>## Lecture de TYPE_PROJECTION.csv : méthode avec encoding = &#39;Latin-1&#39; et fill=TRUE</code></pre>
 <pre><code>## Lecture de TYPE_RIPISYLVE.csv : méthode avec encoding = &#39;Latin-1&#39; et fill=TRUE</code></pre>
 <pre><code>## Lecture de TYPE_STRATE.csv : méthode avec encoding = &#39;Latin-1&#39; et fill=TRUE</code></pre>
@@ -4176,7 +4161,7 @@ problèmes.</p>
 </div>
 <div id="import-des-données-du-bassin-loire-bretagne" class="section level3">
 <h3>2) Import des données du bassin Loire-Bretagne</h3>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" tabindex="-1"></a>LB <span class="ot">&lt;-</span> <span class="fu">import_bassin</span>(<span class="st">&quot;../Data/export_04&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" tabindex="-1"></a>LB <span class="ot">&lt;-</span> <span class="fu">import_bassin</span>(<span class="st">&quot;../Data/export_04&quot;</span>)</span></code></pre></div>
 <pre><code>## Lecture de BERGE.csv : méthode avec encoding = &#39;Latin-1&#39; et fill=TRUE</code></pre>
 <pre><code>## Lecture de BERGE_HABITAT_CARACTERISTIQUE.csv : méthode avec encoding = &#39;Latin-1&#39; et fill=TRUE</code></pre>
 <pre><code>## Lecture de CONTINUITE_RIPISYLVE.csv : méthode avec encoding = &#39;Latin-1&#39; et fill=TRUE</code></pre>
@@ -4210,311 +4195,220 @@ problèmes.</p>
 </div>
 <div id="jointure-des-données-des-2-bassins-étudiés" class="section level3">
 <h3>3) Jointure des données des 2 bassins étudiés</h3>
-<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" tabindex="-1"></a><span class="co">#Faire une jointure de toutes les tables qui ont le même nom provenant des </span></span>
-<span id="cb66-2"><a href="#cb66-2" tabindex="-1"></a><span class="co">#exports des bassins Seine-Normandie et Loire-Bretagne</span></span>
-<span id="cb66-3"><a href="#cb66-3" tabindex="-1"></a></span>
-<span id="cb66-4"><a href="#cb66-4" tabindex="-1"></a><span class="cf">for</span>(nom <span class="cf">in</span> <span class="fu">names</span>(SN)){</span>
-<span id="cb66-5"><a href="#cb66-5" tabindex="-1"></a><span class="co">#pour chaque nom de fichier différent, assigner le nom du fichier en question </span></span>
-<span id="cb66-6"><a href="#cb66-6" tabindex="-1"></a><span class="co">#et faire une jointure des deux fichiers correspondants</span></span>
-<span id="cb66-7"><a href="#cb66-7" tabindex="-1"></a>  <span class="fu">assign</span>(</span>
-<span id="cb66-8"><a href="#cb66-8" tabindex="-1"></a>    nom,</span>
-<span id="cb66-9"><a href="#cb66-9" tabindex="-1"></a>    <span class="fu">bind_rows</span>(</span>
-<span id="cb66-10"><a href="#cb66-10" tabindex="-1"></a>      SN[[nom]],</span>
-<span id="cb66-11"><a href="#cb66-11" tabindex="-1"></a>      LB[[nom]]</span>
-<span id="cb66-12"><a href="#cb66-12" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span> </span>
-<span id="cb66-13"><a href="#cb66-13" tabindex="-1"></a>    <span class="fu">distinct</span>() <span class="co">#supprimer les doublons car une même station peut être présente dans les export des 2 bassins</span></span>
-<span id="cb66-14"><a href="#cb66-14" tabindex="-1"></a>  )</span>
-<span id="cb66-15"><a href="#cb66-15" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" tabindex="-1"></a><span class="co">#Faire une jointure de toutes les tables qui ont le même nom provenant des </span></span>
+<span id="cb67-2"><a href="#cb67-2" tabindex="-1"></a><span class="co">#exports des bassins Seine-Normandie et Loire-Bretagne</span></span>
+<span id="cb67-3"><a href="#cb67-3" tabindex="-1"></a></span>
+<span id="cb67-4"><a href="#cb67-4" tabindex="-1"></a><span class="cf">for</span>(nom <span class="cf">in</span> <span class="fu">names</span>(SN)){</span>
+<span id="cb67-5"><a href="#cb67-5" tabindex="-1"></a><span class="co">#pour chaque nom de fichier différent, assigner le nom du fichier en question </span></span>
+<span id="cb67-6"><a href="#cb67-6" tabindex="-1"></a><span class="co">#et faire une jointure des deux fichiers correspondants</span></span>
+<span id="cb67-7"><a href="#cb67-7" tabindex="-1"></a>  <span class="fu">assign</span>(</span>
+<span id="cb67-8"><a href="#cb67-8" tabindex="-1"></a>    nom,</span>
+<span id="cb67-9"><a href="#cb67-9" tabindex="-1"></a>    <span class="fu">bind_rows</span>(</span>
+<span id="cb67-10"><a href="#cb67-10" tabindex="-1"></a>      SN[[nom]],</span>
+<span id="cb67-11"><a href="#cb67-11" tabindex="-1"></a>      LB[[nom]]</span>
+<span id="cb67-12"><a href="#cb67-12" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span> </span>
+<span id="cb67-13"><a href="#cb67-13" tabindex="-1"></a>    <span class="fu">distinct</span>() <span class="co">#supprimer les doublons car une même station peut être présente dans les export des 2 bassins</span></span>
+<span id="cb67-14"><a href="#cb67-14" tabindex="-1"></a>  )</span>
+<span id="cb67-15"><a href="#cb67-15" tabindex="-1"></a>}</span></code></pre></div>
 </div>
 </div>
 <div id="d.-chargement-des-stations-étudiées-en-normandie" class="section level2">
 <h2>D. Chargement des stations étudiées en Normandie</h2>
-<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" tabindex="-1"></a><span class="co">#table contenant les stations suivies en Normandie</span></span>
-<span id="cb67-2"><a href="#cb67-2" tabindex="-1"></a><span class="co"># A adapter selon le chemin du fichier d&#39;entrée et son format</span></span>
-<span id="cb67-3"><a href="#cb67-3" tabindex="-1"></a>referentiel_stations <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">&quot;R:/Public/04_SRC/CARHYCE/000_Référentiel_CARHYCE/suiviCARHYCE_REFENTIEL.xlsx&quot;</span>, </span>
-<span id="cb67-4"><a href="#cb67-4" tabindex="-1"></a>                                    <span class="at">skip =</span> <span class="dv">1</span>, <span class="at">n_max =</span> <span class="dv">100</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb67-5"><a href="#cb67-5" tabindex="-1"></a>  <span class="co">#sélectionner les variables qui nous interessent</span></span>
-<span id="cb67-6"><a href="#cb67-6" tabindex="-1"></a>  <span class="fu">select</span>(<span class="at">code_sandre=</span><span class="st">`</span><span class="at">Code Sandre</span><span class="st">`</span>,</span>
-<span id="cb67-7"><a href="#cb67-7" tabindex="-1"></a>         <span class="at">reseau=</span> <span class="st">`</span><span class="at">Réseaux</span><span class="st">`</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb67-8"><a href="#cb67-8" tabindex="-1"></a>  <span class="co">#garder seulement les cellules contenant des codes </span></span>
-<span id="cb67-9"><a href="#cb67-9" tabindex="-1"></a>  <span class="co">#(nous avons constaté la présence de texte dans certaines cellules)</span></span>
-<span id="cb67-10"><a href="#cb67-10" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(code_sandre, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">d&quot;</span>))<span class="sc">%&gt;%</span> </span>
-<span id="cb67-11"><a href="#cb67-11" tabindex="-1"></a>  <span class="fu">distinct</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" tabindex="-1"></a><span class="co">#table contenant les stations suivies en Normandie</span></span>
+<span id="cb68-2"><a href="#cb68-2" tabindex="-1"></a><span class="co"># A adapter selon le chemin du fichier d&#39;entrée et son format</span></span>
+<span id="cb68-3"><a href="#cb68-3" tabindex="-1"></a>referentiel_stations <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">&quot;R:/Public/04_SRC/CARHYCE/000_Référentiel_CARHYCE/suiviCARHYCE_REFENTIEL.xlsx&quot;</span>, </span>
+<span id="cb68-4"><a href="#cb68-4" tabindex="-1"></a>                                    <span class="at">skip =</span> <span class="dv">1</span>, <span class="co">#on évite la première ligne car dans notre fichier il s&#39;agit d&#39;un titre</span></span>
+<span id="cb68-5"><a href="#cb68-5" tabindex="-1"></a>                                   <span class="at">n_max =</span> <span class="dv">100</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb68-6"><a href="#cb68-6" tabindex="-1"></a>  <span class="co">#sélectionner les variables qui nous interessent</span></span>
+<span id="cb68-7"><a href="#cb68-7" tabindex="-1"></a>  <span class="fu">select</span>(<span class="at">code_sandre=</span><span class="st">`</span><span class="at">Code Sandre</span><span class="st">`</span>,</span>
+<span id="cb68-8"><a href="#cb68-8" tabindex="-1"></a>         <span class="at">reseau=</span> <span class="st">`</span><span class="at">Réseaux</span><span class="st">`</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb68-9"><a href="#cb68-9" tabindex="-1"></a>  <span class="co">#garder seulement les cellules contenant des codes </span></span>
+<span id="cb68-10"><a href="#cb68-10" tabindex="-1"></a>  <span class="co">#(nous avons constaté la présence de texte dans certaines cellules)</span></span>
+<span id="cb68-11"><a href="#cb68-11" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(code_sandre, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">d&quot;</span>))<span class="sc">%&gt;%</span> </span>
+<span id="cb68-12"><a href="#cb68-12" tabindex="-1"></a>  <span class="fu">distinct</span>()</span></code></pre></div>
 <pre><code>## New names:
 ## • `` -&gt; `...25`</code></pre>
-<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" tabindex="-1"></a><span class="co">#objet contenant les codes des stations étudiées</span></span>
-<span id="cb69-2"><a href="#cb69-2" tabindex="-1"></a>mes_codes_stations <span class="ot">&lt;-</span> <span class="fu">unique</span>(referentiel_stations<span class="sc">$</span>code_sandre)</span>
-<span id="cb69-3"><a href="#cb69-3" tabindex="-1"></a></span>
-<span id="cb69-4"><a href="#cb69-4" tabindex="-1"></a><span class="fu">saveRDS</span>(mes_codes_stations,</span>
-<span id="cb69-5"><a href="#cb69-5" tabindex="-1"></a>        <span class="fu">here</span>(<span class="st">&quot;Data/clean_data&quot;</span>, <span class="st">&quot;codes_stations_suivies.rds&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" tabindex="-1"></a><span class="co">#objet contenant les codes des stations étudiées</span></span>
+<span id="cb70-2"><a href="#cb70-2" tabindex="-1"></a>mes_codes_stations <span class="ot">&lt;-</span> <span class="fu">unique</span>(referentiel_stations<span class="sc">$</span>code_sandre)</span>
+<span id="cb70-3"><a href="#cb70-3" tabindex="-1"></a></span>
+<span id="cb70-4"><a href="#cb70-4" tabindex="-1"></a><span class="fu">saveRDS</span>(mes_codes_stations,</span>
+<span id="cb70-5"><a href="#cb70-5" tabindex="-1"></a>        <span class="fu">here</span>(<span class="st">&quot;Data/clean_data&quot;</span>, <span class="st">&quot;codes_stations_suivies.rds&quot;</span>))</span></code></pre></div>
 <p><strong>Aperçu de la table referentiel_stations</strong></p>
-<div class="datatables html-widget html-fill-item" id="htmlwidget-9a4042d42a0995722fd9" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-9a4042d42a0995722fd9">{"x":{"filter":"none","vertical":false,"data":[["03226000","03226300","03226540","03226640","03227100","03227296","03227475","03228690","03231000","03231065"],["REF + RRP","RCS","RCS","RRP","RCS","RCS","RHP","RCS","RCS","RCS"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>code_sandre<\/th>\n      <th>reseau<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"pageLength":5,"columnDefs":[{"name":"code_sandre","targets":0},{"name":"reseau","targets":1}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-06d1da215ccb7d796abc" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-06d1da215ccb7d796abc">{"x":{"filter":"none","vertical":false,"data":[["03226000","03226300","03226540","03226640","03227100","03227296","03227475","03228690","03231000","03231065"],["REF + RRP","RCS","RCS","RRP","RCS","RCS","RHP","RCS","RCS","RCS"]],"container":"<table class=\"display compact\">\n  <thead>\n    <tr>\n      <th>code_sandre<\/th>\n      <th>reseau<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"pageLength":5,"columnDefs":[{"name":"code_sandre","targets":0},{"name":"reseau","targets":1}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="e.-création-de-la-table-commune" class="section level2">
 <h2>E. Création de la table commune</h2>
 <p>Afin de vérifier que l’import à fonctionné, on va d’abord créer une
 table contenant les informations des stations retenues. Cela permet de
 vérifier que les doublons ont bien été retirés.</p>
-<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" tabindex="-1"></a>Table_stations_etude <span class="ot">&lt;-</span> STATION_MESURE <span class="sc">%&gt;%</span> </span>
-<span id="cb70-2"><a href="#cb70-2" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Code_station_SANDRE =</span> SME_CD_STATION_MESURE_EAUX_SURFACE) <span class="sc">%&gt;%</span> </span>
-<span id="cb70-3"><a href="#cb70-3" tabindex="-1"></a>  <span class="fu">mutate</span>( </span>
-<span id="cb70-4"><a href="#cb70-4" tabindex="-1"></a>    <span class="co">#créer la variable &quot;libelle_bassin&quot;</span></span>
-<span id="cb70-5"><a href="#cb70-5" tabindex="-1"></a>    <span class="co"># à adapter selon la région</span></span>
-<span id="cb70-6"><a href="#cb70-6" tabindex="-1"></a>    <span class="at">Libelle_bassin =</span> <span class="fu">recode</span>(</span>
-<span id="cb70-7"><a href="#cb70-7" tabindex="-1"></a>      <span class="fu">substr</span>(Code_station_SANDRE, <span class="dv">1</span>, <span class="dv">2</span>),</span>
-<span id="cb70-8"><a href="#cb70-8" tabindex="-1"></a>      <span class="co">#si les deux premiers chiffres du code station sont &quot;03&quot; alors on attribue</span></span>
-<span id="cb70-9"><a href="#cb70-9" tabindex="-1"></a>      <span class="co">#le bassin &quot;Seine-Normandie&quot;</span></span>
-<span id="cb70-10"><a href="#cb70-10" tabindex="-1"></a>      <span class="st">&quot;03&quot;</span> <span class="ot">=</span> <span class="st">&quot;Seine-Normandie&quot;</span>,</span>
-<span id="cb70-11"><a href="#cb70-11" tabindex="-1"></a>      <span class="co">#si les deux premiers chiffres du code station sont &quot;04&quot; alors on attribue</span></span>
-<span id="cb70-12"><a href="#cb70-12" tabindex="-1"></a>      <span class="co">#le bassin &quot;Loire-Bretagne&quot;</span></span>
-<span id="cb70-13"><a href="#cb70-13" tabindex="-1"></a>      <span class="st">&quot;04&quot;</span> <span class="ot">=</span> <span class="st">&quot;Loire-Bretagne&quot;</span>,</span>
-<span id="cb70-14"><a href="#cb70-14" tabindex="-1"></a>      <span class="at">.default =</span> <span class="cn">NA_character_</span>),</span>
-<span id="cb70-15"><a href="#cb70-15" tabindex="-1"></a>    </span>
-<span id="cb70-16"><a href="#cb70-16" tabindex="-1"></a>    <span class="co">#créer une variable contenant le nom des départements</span></span>
-<span id="cb70-17"><a href="#cb70-17" tabindex="-1"></a>    <span class="at">Libelle_departement =</span> <span class="fu">recode</span>(</span>
-<span id="cb70-18"><a href="#cb70-18" tabindex="-1"></a>      SME_CD_DEPARTEMENT,</span>
-<span id="cb70-19"><a href="#cb70-19" tabindex="-1"></a>      <span class="st">&quot;14&quot;</span> <span class="ot">=</span> <span class="st">&quot;Calvados&quot;</span>,</span>
-<span id="cb70-20"><a href="#cb70-20" tabindex="-1"></a>      <span class="st">&quot;27&quot;</span> <span class="ot">=</span> <span class="st">&quot;Eure&quot;</span>,</span>
-<span id="cb70-21"><a href="#cb70-21" tabindex="-1"></a>      <span class="st">&quot;28&quot;</span> <span class="ot">=</span> <span class="st">&quot;Eure-et-Loir&quot;</span>,</span>
-<span id="cb70-22"><a href="#cb70-22" tabindex="-1"></a>      <span class="st">&quot;50&quot;</span> <span class="ot">=</span> <span class="st">&quot;Manche&quot;</span>,</span>
-<span id="cb70-23"><a href="#cb70-23" tabindex="-1"></a>      <span class="st">&quot;61&quot;</span> <span class="ot">=</span> <span class="st">&quot;Orne&quot;</span>,</span>
-<span id="cb70-24"><a href="#cb70-24" tabindex="-1"></a>      <span class="st">&quot;76&quot;</span> <span class="ot">=</span> <span class="st">&quot;Seine-Maritime&quot;</span>,</span>
-<span id="cb70-25"><a href="#cb70-25" tabindex="-1"></a>      <span class="at">.default =</span> <span class="cn">NA_character_</span>),</span>
-<span id="cb70-26"><a href="#cb70-26" tabindex="-1"></a>    <span class="at">Region=</span> <span class="st">&quot;Normandie&quot;</span>)<span class="sc">%&gt;%</span> </span>
-<span id="cb70-27"><a href="#cb70-27" tabindex="-1"></a>  <span class="fu">filter</span>(Code_station_SANDRE <span class="sc">%in%</span> mes_codes_stations) <span class="sc">%&gt;%</span> </span>
-<span id="cb70-28"><a href="#cb70-28" tabindex="-1"></a>  <span class="fu">distinct</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb70-29"><a href="#cb70-29" tabindex="-1"></a>  <span class="fu">left_join</span>(referentiel_stations,</span>
-<span id="cb70-30"><a href="#cb70-30" tabindex="-1"></a>            <span class="at">by=</span><span class="fu">c</span>(<span class="st">&quot;Code_station_SANDRE&quot;</span><span class="ot">=</span><span class="st">&quot;code_sandre&quot;</span>))</span></code></pre></div>
-<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" tabindex="-1"></a><span class="co">#Enregistrer les coordonnées de nos stations sous forme de Geopackage</span></span>
-<span id="cb71-2"><a href="#cb71-2" tabindex="-1"></a><span class="co"># ce fichier sera utilisé lors de la valorisation des données</span></span>
-<span id="cb71-3"><a href="#cb71-3" tabindex="-1"></a><span class="co"># il n&#39;est pas nécessaire pour générer les fiches de mise en qualité</span></span>
-<span id="cb71-4"><a href="#cb71-4" tabindex="-1"></a>stations_CARHYCE_sf <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(</span>
-<span id="cb71-5"><a href="#cb71-5" tabindex="-1"></a>  Table_stations_etude,</span>
-<span id="cb71-6"><a href="#cb71-6" tabindex="-1"></a>  <span class="at">coords =</span> <span class="fu">c</span>(<span class="st">&quot;SME_COORD_X_STATION_MESURE_EAUX_SURFACE&quot;</span>, <span class="st">&quot;SME_COORD_Y_STATION_MESURE_EAUX_SURFACE&quot;</span>),</span>
-<span id="cb71-7"><a href="#cb71-7" tabindex="-1"></a>  <span class="at">crs =</span> <span class="dv">2154</span></span>
-<span id="cb71-8"><a href="#cb71-8" tabindex="-1"></a>)</span>
-<span id="cb71-9"><a href="#cb71-9" tabindex="-1"></a></span>
-<span id="cb71-10"><a href="#cb71-10" tabindex="-1"></a><span class="fu">st_write</span>(</span>
-<span id="cb71-11"><a href="#cb71-11" tabindex="-1"></a>  stations_CARHYCE_sf,</span>
-<span id="cb71-12"><a href="#cb71-12" tabindex="-1"></a>  <span class="st">&quot;../Data/clean_data/stations_CARHYCE.gpkg&quot;</span>,</span>
-<span id="cb71-13"><a href="#cb71-13" tabindex="-1"></a>  <span class="at">delete_dsn =</span> <span class="cn">TRUE</span></span>
-<span id="cb71-14"><a href="#cb71-14" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" tabindex="-1"></a>Table_stations_etude <span class="ot">&lt;-</span> STATION_MESURE <span class="sc">%&gt;%</span> </span>
+<span id="cb71-2"><a href="#cb71-2" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Code_station_SANDRE =</span> SME_CD_STATION_MESURE_EAUX_SURFACE) <span class="sc">%&gt;%</span> </span>
+<span id="cb71-3"><a href="#cb71-3" tabindex="-1"></a>  <span class="fu">mutate</span>( </span>
+<span id="cb71-4"><a href="#cb71-4" tabindex="-1"></a>    <span class="co">#créer la variable &quot;libelle_bassin&quot;</span></span>
+<span id="cb71-5"><a href="#cb71-5" tabindex="-1"></a>    <span class="co"># à adapter selon la région</span></span>
+<span id="cb71-6"><a href="#cb71-6" tabindex="-1"></a>    <span class="at">Libelle_bassin =</span> <span class="fu">recode</span>(</span>
+<span id="cb71-7"><a href="#cb71-7" tabindex="-1"></a>      <span class="fu">substr</span>(Code_station_SANDRE, <span class="dv">1</span>, <span class="dv">2</span>),</span>
+<span id="cb71-8"><a href="#cb71-8" tabindex="-1"></a>      <span class="co">#si les deux premiers chiffres du code station sont &quot;03&quot; alors on attribue</span></span>
+<span id="cb71-9"><a href="#cb71-9" tabindex="-1"></a>      <span class="co">#le bassin &quot;Seine-Normandie&quot;</span></span>
+<span id="cb71-10"><a href="#cb71-10" tabindex="-1"></a>      <span class="st">&quot;03&quot;</span> <span class="ot">=</span> <span class="st">&quot;Seine-Normandie&quot;</span>,</span>
+<span id="cb71-11"><a href="#cb71-11" tabindex="-1"></a>      <span class="co">#si les deux premiers chiffres du code station sont &quot;04&quot; alors on attribue</span></span>
+<span id="cb71-12"><a href="#cb71-12" tabindex="-1"></a>      <span class="co">#le bassin &quot;Loire-Bretagne&quot;</span></span>
+<span id="cb71-13"><a href="#cb71-13" tabindex="-1"></a>      <span class="st">&quot;04&quot;</span> <span class="ot">=</span> <span class="st">&quot;Loire-Bretagne&quot;</span>,</span>
+<span id="cb71-14"><a href="#cb71-14" tabindex="-1"></a>      <span class="at">.default =</span> <span class="cn">NA_character_</span>),</span>
+<span id="cb71-15"><a href="#cb71-15" tabindex="-1"></a>    </span>
+<span id="cb71-16"><a href="#cb71-16" tabindex="-1"></a>    <span class="co">#créer une variable contenant le nom des départements</span></span>
+<span id="cb71-17"><a href="#cb71-17" tabindex="-1"></a>    <span class="at">Libelle_departement =</span> <span class="fu">recode</span>(</span>
+<span id="cb71-18"><a href="#cb71-18" tabindex="-1"></a>      SME_CD_DEPARTEMENT,</span>
+<span id="cb71-19"><a href="#cb71-19" tabindex="-1"></a>      <span class="st">&quot;14&quot;</span> <span class="ot">=</span> <span class="st">&quot;Calvados&quot;</span>,</span>
+<span id="cb71-20"><a href="#cb71-20" tabindex="-1"></a>      <span class="st">&quot;27&quot;</span> <span class="ot">=</span> <span class="st">&quot;Eure&quot;</span>,</span>
+<span id="cb71-21"><a href="#cb71-21" tabindex="-1"></a>      <span class="st">&quot;28&quot;</span> <span class="ot">=</span> <span class="st">&quot;Eure-et-Loir&quot;</span>,</span>
+<span id="cb71-22"><a href="#cb71-22" tabindex="-1"></a>      <span class="st">&quot;50&quot;</span> <span class="ot">=</span> <span class="st">&quot;Manche&quot;</span>,</span>
+<span id="cb71-23"><a href="#cb71-23" tabindex="-1"></a>      <span class="st">&quot;61&quot;</span> <span class="ot">=</span> <span class="st">&quot;Orne&quot;</span>,</span>
+<span id="cb71-24"><a href="#cb71-24" tabindex="-1"></a>      <span class="st">&quot;76&quot;</span> <span class="ot">=</span> <span class="st">&quot;Seine-Maritime&quot;</span>,</span>
+<span id="cb71-25"><a href="#cb71-25" tabindex="-1"></a>      <span class="at">.default =</span> <span class="cn">NA_character_</span>),</span>
+<span id="cb71-26"><a href="#cb71-26" tabindex="-1"></a>    <span class="at">Region=</span> <span class="st">&quot;Normandie&quot;</span>)<span class="sc">%&gt;%</span> </span>
+<span id="cb71-27"><a href="#cb71-27" tabindex="-1"></a>  <span class="fu">filter</span>(Code_station_SANDRE <span class="sc">%in%</span> mes_codes_stations) <span class="sc">%&gt;%</span> </span>
+<span id="cb71-28"><a href="#cb71-28" tabindex="-1"></a>  <span class="fu">distinct</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb71-29"><a href="#cb71-29" tabindex="-1"></a>  <span class="fu">left_join</span>(referentiel_stations,</span>
+<span id="cb71-30"><a href="#cb71-30" tabindex="-1"></a>            <span class="at">by=</span><span class="fu">c</span>(<span class="st">&quot;Code_station_SANDRE&quot;</span><span class="ot">=</span><span class="st">&quot;code_sandre&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" tabindex="-1"></a><span class="co">#Enregistrer les coordonnées de nos stations sous forme de Geopackage</span></span>
+<span id="cb72-2"><a href="#cb72-2" tabindex="-1"></a><span class="co"># ce fichier sera utilisé lors de la valorisation des données</span></span>
+<span id="cb72-3"><a href="#cb72-3" tabindex="-1"></a><span class="co"># il n&#39;est pas nécessaire pour générer les fiches de mise en qualité</span></span>
+<span id="cb72-4"><a href="#cb72-4" tabindex="-1"></a>stations_CARHYCE_sf <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(</span>
+<span id="cb72-5"><a href="#cb72-5" tabindex="-1"></a>  Table_stations_etude,</span>
+<span id="cb72-6"><a href="#cb72-6" tabindex="-1"></a>  <span class="at">coords =</span> <span class="fu">c</span>(<span class="st">&quot;SME_COORD_X_STATION_MESURE_EAUX_SURFACE&quot;</span>, <span class="st">&quot;SME_COORD_Y_STATION_MESURE_EAUX_SURFACE&quot;</span>),</span>
+<span id="cb72-7"><a href="#cb72-7" tabindex="-1"></a>  <span class="at">crs =</span> <span class="dv">2154</span></span>
+<span id="cb72-8"><a href="#cb72-8" tabindex="-1"></a>)</span>
+<span id="cb72-9"><a href="#cb72-9" tabindex="-1"></a></span>
+<span id="cb72-10"><a href="#cb72-10" tabindex="-1"></a><span class="fu">st_write</span>(</span>
+<span id="cb72-11"><a href="#cb72-11" tabindex="-1"></a>  stations_CARHYCE_sf,</span>
+<span id="cb72-12"><a href="#cb72-12" tabindex="-1"></a>  <span class="st">&quot;../Data/clean_data/stations_CARHYCE.gpkg&quot;</span>,</span>
+<span id="cb72-13"><a href="#cb72-13" tabindex="-1"></a>  <span class="at">delete_dsn =</span> <span class="cn">TRUE</span></span>
+<span id="cb72-14"><a href="#cb72-14" tabindex="-1"></a>)</span></code></pre></div>
 <pre><code>## Deleting source `../Data/clean_data/stations_CARHYCE.gpkg&#39; using driver `GPKG&#39;
 ## Writing layer `stations_CARHYCE&#39; to data source 
 ##   `../Data/clean_data/stations_CARHYCE.gpkg&#39; using driver `GPKG&#39;
 ## Writing 86 features with 10 fields and geometry type Point.</code></pre>
-<div class="datatables html-widget html-fill-item" id="htmlwidget-c361df28b2d9ee2a9fdf" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-c361df28b2d9ee2a9fdf">{"x":{"filter":"none","vertical":false,"data":[["03233980","03247210","03245100","03198530","03272685","03240100","03223200","03248401","03234956","03227100"],["L'URE A SILLY-EN-GOUFFERN 2","LA DRÔME A LA VACQUERIE 1","LA LAIZE A LAIZE-LA-VILLE 2","LE ROULOIR A CONCHES-EN-OUCHE 2","LA SÉLUNE A SAINT-AUBIN-DE-TERREGATTE 1","LA ROUVRE A FAVEROLLES 2","LA CHARENTONNE A FERRIERES-SAINT-HILAIRE 1","LA VIRE A TRUTTEMER-LE-GRAND 1","LA FONTAINE AU HÉRON A SAINT-AUBERT-SUR-ORNE 1","LA PAQUINE A HERMIVAL-LES-VAUX 1"],["L'Ure","La Drome","La Laize","Le Rouloir","La Selune","La Rouvre","La Charentonne","La Vire","La Fontaine au Heron","La Paquine"],["61","14","14","27","50","61","27","14","61","14"],["486872.0","416636.0","453221.0","550203.0","383604.33","456564.86","521063.0","418804.12","456837.04","501202.0"],["6854308.0","6894818.0","6892511.0","6875664.0","6841489.07","6846225.92","6882342.0","6860593.58","6858142.9","6899646.0"],["26","26","26","26","26","26","26","26","26","26"],["oui","oui","oui","oui","oui","oui","oui","oui","oui","oui"],["Seine-Normandie","Seine-Normandie","Seine-Normandie","Seine-Normandie","Seine-Normandie","Seine-Normandie","Seine-Normandie","Seine-Normandie","Seine-Normandie","Seine-Normandie"],["Orne","Calvados","Calvados","Eure","Manche","Orne","Eure","Calvados","Orne","Calvados"],["Normandie","Normandie","Normandie","Normandie","Normandie","Normandie","Normandie","Normandie","Normandie","Normandie"],["RCS","RCS","RCS","RCS","RCS","RCS","RCS + Ref","RCS + RHP + Ref","RRP","RCS"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Code_station_SANDRE<\/th>\n      <th>SME_LB_STATION_MESURE_EAUX_SURFACE<\/th>\n      <th>SME_NOM_ENTITE_HYDROGRAPHIQUE<\/th>\n      <th>SME_CD_DEPARTEMENT<\/th>\n      <th>SME_COORD_X_STATION_MESURE_EAUX_SURFACE<\/th>\n      <th>SME_COORD_Y_STATION_MESURE_EAUX_SURFACE<\/th>\n      <th>SME_PROJ_STATION_MESURE_EAUX_SURFACE<\/th>\n      <th>SME_EST_SANDRE<\/th>\n      <th>Libelle_bassin<\/th>\n      <th>Libelle_departement<\/th>\n      <th>Region<\/th>\n      <th>reseau<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"pageLength":5,"columnDefs":[{"name":"Code_station_SANDRE","targets":0},{"name":"SME_LB_STATION_MESURE_EAUX_SURFACE","targets":1},{"name":"SME_NOM_ENTITE_HYDROGRAPHIQUE","targets":2},{"name":"SME_CD_DEPARTEMENT","targets":3},{"name":"SME_COORD_X_STATION_MESURE_EAUX_SURFACE","targets":4},{"name":"SME_COORD_Y_STATION_MESURE_EAUX_SURFACE","targets":5},{"name":"SME_PROJ_STATION_MESURE_EAUX_SURFACE","targets":6},{"name":"SME_EST_SANDRE","targets":7},{"name":"Libelle_bassin","targets":8},{"name":"Libelle_departement","targets":9},{"name":"Region","targets":10},{"name":"reseau","targets":11}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-fbec291be66e2c24a8db" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-fbec291be66e2c24a8db">{"x":{"filter":"none","vertical":false,"data":[["03233980","03247210","03245100","03198530","03240100","03223200","03272685","03248401","03234956","03227100"],["L'URE A SILLY-EN-GOUFFERN 2","LA DRÔME A LA VACQUERIE 1","LA LAIZE A LAIZE-LA-VILLE 2","LE ROULOIR A CONCHES-EN-OUCHE 2","LA ROUVRE A FAVEROLLES 2","LA CHARENTONNE A FERRIERES-SAINT-HILAIRE 1","LA SÉLUNE A SAINT-AUBIN-DE-TERREGATTE 1","LA VIRE A TRUTTEMER-LE-GRAND 1","LA FONTAINE AU HÉRON A SAINT-AUBERT-SUR-ORNE 1","LA PAQUINE A HERMIVAL-LES-VAUX 1"],["L'Ure","La Drome","La Laize","Le Rouloir","La Rouvre","La Charentonne","La Selune","La Vire","La Fontaine au Heron","La Paquine"],["61","14","14","27","61","27","50","14","61","14"],["486872.0","416636.0","453221.0","550203.0","456564.86","521063.0","383604.33","418804.12","456837.04","501202.0"],["6854308.0","6894818.0","6892511.0","6875664.0","6846225.92","6882342.0","6841489.07","6860593.58","6858142.9","6899646.0"],["26","26","26","26","26","26","26","26","26","26"],["oui","oui","oui","oui","oui","oui","oui","oui","oui","oui"],["Seine-Normandie","Seine-Normandie","Seine-Normandie","Seine-Normandie","Seine-Normandie","Seine-Normandie","Seine-Normandie","Seine-Normandie","Seine-Normandie","Seine-Normandie"],["Orne","Calvados","Calvados","Eure","Orne","Eure","Manche","Calvados","Orne","Calvados"],["Normandie","Normandie","Normandie","Normandie","Normandie","Normandie","Normandie","Normandie","Normandie","Normandie"],["RCS","RCS","RCS","RCS","RCS","RCS + Ref","RCS","RCS + RHP + Ref","RRP","RCS"]],"container":"<table class=\"display compact\">\n  <thead>\n    <tr>\n      <th>Code_station_SANDRE<\/th>\n      <th>SME_LB_STATION_MESURE_EAUX_SURFACE<\/th>\n      <th>SME_NOM_ENTITE_HYDROGRAPHIQUE<\/th>\n      <th>SME_CD_DEPARTEMENT<\/th>\n      <th>SME_COORD_X_STATION_MESURE_EAUX_SURFACE<\/th>\n      <th>SME_COORD_Y_STATION_MESURE_EAUX_SURFACE<\/th>\n      <th>SME_PROJ_STATION_MESURE_EAUX_SURFACE<\/th>\n      <th>SME_EST_SANDRE<\/th>\n      <th>Libelle_bassin<\/th>\n      <th>Libelle_departement<\/th>\n      <th>Region<\/th>\n      <th>reseau<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"pageLength":5,"columnDefs":[{"name":"Code_station_SANDRE","targets":0},{"name":"SME_LB_STATION_MESURE_EAUX_SURFACE","targets":1},{"name":"SME_NOM_ENTITE_HYDROGRAPHIQUE","targets":2},{"name":"SME_CD_DEPARTEMENT","targets":3},{"name":"SME_COORD_X_STATION_MESURE_EAUX_SURFACE","targets":4},{"name":"SME_COORD_Y_STATION_MESURE_EAUX_SURFACE","targets":5},{"name":"SME_PROJ_STATION_MESURE_EAUX_SURFACE","targets":6},{"name":"SME_EST_SANDRE","targets":7},{"name":"Libelle_bassin","targets":8},{"name":"Libelle_departement","targets":9},{"name":"Region","targets":10},{"name":"reseau","targets":11}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
 <p>A présent nous pouvons mettre en forme nos données en effectuant les
 différentes jointures entre les tables qui nous intéressent.</p>
-<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" tabindex="-1"></a>Table_ope_transect_point <span class="ot">&lt;-</span> Table_stations_etude <span class="sc">%&gt;%</span></span>
-<span id="cb73-2"><a href="#cb73-2" tabindex="-1"></a>  <span class="co">#ajouter le libelle du type de projection des coordonnées</span></span>
-<span id="cb73-3"><a href="#cb73-3" tabindex="-1"></a>  <span class="fu">left_join</span>(TYPE_PROJECTION <span class="sc">%&gt;%</span> </span>
-<span id="cb73-4"><a href="#cb73-4" tabindex="-1"></a>              <span class="fu">select</span>(TPR_CODE,TPR_LIBELLE),</span>
-<span id="cb73-5"><a href="#cb73-5" tabindex="-1"></a>              <span class="at">by=</span><span class="fu">c</span>(<span class="st">&quot;SME_PROJ_STATION_MESURE_EAUX_SURFACE&quot;</span><span class="ot">=</span><span class="st">&quot;TPR_CODE&quot;</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb73-6"><a href="#cb73-6" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>SME_EST_SANDRE, </span>
-<span id="cb73-7"><a href="#cb73-7" tabindex="-1"></a>         <span class="sc">-</span>SME_PROJ_STATION_MESURE_EAUX_SURFACE) <span class="sc">%&gt;%</span> </span>
-<span id="cb73-8"><a href="#cb73-8" tabindex="-1"></a>  </span>
-<span id="cb73-9"><a href="#cb73-9" tabindex="-1"></a>  <span class="co">#JOINTURE 1 = ajouter le détail des opérations de chaque station</span></span>
-<span id="cb73-10"><a href="#cb73-10" tabindex="-1"></a>  <span class="fu">left_join</span>(</span>
-<span id="cb73-11"><a href="#cb73-11" tabindex="-1"></a>    OPERATION <span class="sc">%&gt;%</span></span>
-<span id="cb73-12"><a href="#cb73-12" tabindex="-1"></a>      <span class="fu">select</span>(OPE_ID,</span>
-<span id="cb73-13"><a href="#cb73-13" tabindex="-1"></a>             OPE_CODE,</span>
-<span id="cb73-14"><a href="#cb73-14" tabindex="-1"></a>             OPE_VERSION_PROTOCOLE,</span>
-<span id="cb73-15"><a href="#cb73-15" tabindex="-1"></a>             OPE_VERSION_PROTOCOLE_LIBELLE,</span>
-<span id="cb73-16"><a href="#cb73-16" tabindex="-1"></a>             OPE_DATE_REALISATION,</span>
-<span id="cb73-17"><a href="#cb73-17" tabindex="-1"></a>             OPE_DATE_PREVUE,</span>
-<span id="cb73-18"><a href="#cb73-18" tabindex="-1"></a>             OPE_DEBIT_MESURE,</span>
-<span id="cb73-19"><a href="#cb73-19" tabindex="-1"></a>             OPE_DEBIT_STATION_HYDRO,</span>
-<span id="cb73-20"><a href="#cb73-20" tabindex="-1"></a>             OPE_LPBEV, <span class="co">#largeur plein bord évaluée</span></span>
-<span id="cb73-21"><a href="#cb73-21" tabindex="-1"></a>             OPE_LMEV, <span class="co">#largeur mouillée évaluée</span></span>
-<span id="cb73-22"><a href="#cb73-22" tabindex="-1"></a>             OPE_LR, <span class="co">#longueur réelle</span></span>
-<span id="cb73-23"><a href="#cb73-23" tabindex="-1"></a>             OPE_LTH, <span class="co">#longueur théorique</span></span>
-<span id="cb73-24"><a href="#cb73-24" tabindex="-1"></a>             OPE_DIP, <span class="co">#Distance inter point</span></span>
-<span id="cb73-25"><a href="#cb73-25" tabindex="-1"></a>             OPE_PENTE_LIGNE_EAU,</span>
-<span id="cb73-26"><a href="#cb73-26" tabindex="-1"></a>             OPE_PENTE_EVALUEE,</span>
-<span id="cb73-27"><a href="#cb73-27" tabindex="-1"></a>             OPE_OBSERVATIONS,</span>
-<span id="cb73-28"><a href="#cb73-28" tabindex="-1"></a>             OPE_PRES_HABITATS_MARGINAUX, <span class="co">#présence habitats marginaux</span></span>
-<span id="cb73-29"><a href="#cb73-29" tabindex="-1"></a>             OPE_DESCRIPTION_HABITATS_MARGINAUX,</span>
-<span id="cb73-30"><a href="#cb73-30" tabindex="-1"></a>             PRO_CODE, <span class="co">#statut de programmation</span></span>
-<span id="cb73-31"><a href="#cb73-31" tabindex="-1"></a>             VAL_CODE, <span class="co">#statut de validation de l&#39;opération</span></span>
-<span id="cb73-32"><a href="#cb73-32" tabindex="-1"></a>             QUA_CODE, <span class="co">#niveau de qualification de l&#39;opération</span></span>
-<span id="cb73-33"><a href="#cb73-33" tabindex="-1"></a>             PPR_ID, <span class="co">#code du point de prélèvement</span></span>
-<span id="cb73-34"><a href="#cb73-34" tabindex="-1"></a>             RME_CODE_SANDRE, <span class="co">#identifiant réseau de mesure</span></span>
-<span id="cb73-35"><a href="#cb73-35" tabindex="-1"></a>             RME_NOM <span class="co">#libelle du réseau de mesure</span></span>
-<span id="cb73-36"><a href="#cb73-36" tabindex="-1"></a>             ) <span class="sc">%&gt;%</span> </span>
-<span id="cb73-37"><a href="#cb73-37" tabindex="-1"></a>      <span class="fu">mutate</span>(</span>
-<span id="cb73-38"><a href="#cb73-38" tabindex="-1"></a>        <span class="fu">across</span>(</span>
-<span id="cb73-39"><a href="#cb73-39" tabindex="-1"></a>          <span class="fu">c</span>(OPE_DEBIT_MESURE, </span>
-<span id="cb73-40"><a href="#cb73-40" tabindex="-1"></a>            OPE_DEBIT_STATION_HYDRO,</span>
-<span id="cb73-41"><a href="#cb73-41" tabindex="-1"></a>            OPE_LPBEV, </span>
-<span id="cb73-42"><a href="#cb73-42" tabindex="-1"></a>            OPE_LMEV, </span>
-<span id="cb73-43"><a href="#cb73-43" tabindex="-1"></a>            OPE_LR, </span>
-<span id="cb73-44"><a href="#cb73-44" tabindex="-1"></a>            OPE_LTH, </span>
-<span id="cb73-45"><a href="#cb73-45" tabindex="-1"></a>            OPE_DIP,</span>
-<span id="cb73-46"><a href="#cb73-46" tabindex="-1"></a>            OPE_PENTE_LIGNE_EAU,</span>
-<span id="cb73-47"><a href="#cb73-47" tabindex="-1"></a>            OPE_PENTE_EVALUEE),</span>
-<span id="cb73-48"><a href="#cb73-48" tabindex="-1"></a>          as.numeric),</span>
-<span id="cb73-49"><a href="#cb73-49" tabindex="-1"></a>      <span class="co">#la variable OPE_CODE est une concaténation du code station, </span></span>
-<span id="cb73-50"><a href="#cb73-50" tabindex="-1"></a>      <span class="co">#point de prélèvement et numéro de l&#39;opération</span></span>
-<span id="cb73-51"><a href="#cb73-51" tabindex="-1"></a>      <span class="co">#on crée 3 variables à partir de celle-ci afin d&#39;isoler le code station </span></span>
-<span id="cb73-52"><a href="#cb73-52" tabindex="-1"></a>      <span class="co">#et faciliter les jointures</span></span>
-<span id="cb73-53"><a href="#cb73-53" tabindex="-1"></a>        <span class="at">Code_station_SANDRE   =</span> <span class="fu">substr</span>(OPE_CODE, <span class="dv">1</span>, <span class="dv">8</span>),</span>
-<span id="cb73-54"><a href="#cb73-54" tabindex="-1"></a>        <span class="at">code_pt_prelevement =</span> <span class="fu">substr</span>(OPE_CODE, <span class="dv">9</span>, <span class="dv">11</span>),</span>
-<span id="cb73-55"><a href="#cb73-55" tabindex="-1"></a>        <span class="at">num_operation        =</span> <span class="fu">substr</span>(OPE_CODE, <span class="dv">12</span>, <span class="dv">14</span>)</span>
-<span id="cb73-56"><a href="#cb73-56" tabindex="-1"></a>        ) <span class="sc">%&gt;%</span></span>
-<span id="cb73-57"><a href="#cb73-57" tabindex="-1"></a>      <span class="fu">left_join</span>(POINT_PRELEVEMENT <span class="sc">%&gt;%</span> </span>
-<span id="cb73-58"><a href="#cb73-58" tabindex="-1"></a>                  <span class="fu">select</span>(SME_CD_STATION_MESURE_EAUX_SURFACE,</span>
-<span id="cb73-59"><a href="#cb73-59" tabindex="-1"></a>                         PPR_CD_POINT_EAUX_SURF,</span>
-<span id="cb73-60"><a href="#cb73-60" tabindex="-1"></a>                         PPR_COORD_X_AVAL_POINT_EAUX_SURF,</span>
-<span id="cb73-61"><a href="#cb73-61" tabindex="-1"></a>                         PPR_COORD_Y_AVAL_POINT_EAUX_SURF),</span>
-<span id="cb73-62"><a href="#cb73-62" tabindex="-1"></a>                <span class="at">b=</span><span class="fu">c</span>(<span class="st">&quot;Code_station_SANDRE&quot;</span> <span class="ot">=</span> <span class="st">&quot;SME_CD_STATION_MESURE_EAUX_SURFACE&quot;</span>,</span>
-<span id="cb73-63"><a href="#cb73-63" tabindex="-1"></a>                    <span class="st">&quot;code_pt_prelevement&quot;</span> <span class="ot">=</span> <span class="st">&quot;PPR_CD_POINT_EAUX_SURF&quot;</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb73-64"><a href="#cb73-64" tabindex="-1"></a>      <span class="fu">left_join</span>(PROGRAMMATION <span class="sc">%&gt;%</span> <span class="co">#ajouter les libelles d&#39;avancement correspondants</span></span>
-<span id="cb73-65"><a href="#cb73-65" tabindex="-1"></a>                  <span class="fu">select</span>(PRO_CODE,PRO_LIBELLE),</span>
-<span id="cb73-66"><a href="#cb73-66" tabindex="-1"></a>                <span class="at">by=</span><span class="st">&quot;PRO_CODE&quot;</span>)<span class="sc">%&gt;%</span></span>
-<span id="cb73-67"><a href="#cb73-67" tabindex="-1"></a>      <span class="fu">left_join</span>(QUALIFICATION <span class="sc">%&gt;%</span> <span class="co">#ajouter les libelles de qualification correspondants</span></span>
-<span id="cb73-68"><a href="#cb73-68" tabindex="-1"></a>                  <span class="fu">select</span>(QUA_CODE,QUA_LIBELLE),</span>
-<span id="cb73-69"><a href="#cb73-69" tabindex="-1"></a>                <span class="at">by=</span><span class="st">&quot;QUA_CODE&quot;</span>)<span class="sc">%&gt;%</span></span>
-<span id="cb73-70"><a href="#cb73-70" tabindex="-1"></a>      <span class="fu">left_join</span>(VALIDATION <span class="sc">%&gt;%</span> <span class="co">#ajouter les libelles de qualification correspondants</span></span>
-<span id="cb73-71"><a href="#cb73-71" tabindex="-1"></a>                  <span class="fu">select</span>(VAL_CODE,VAL_LIBELLE),</span>
-<span id="cb73-72"><a href="#cb73-72" tabindex="-1"></a>                <span class="at">by=</span><span class="st">&quot;VAL_CODE&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb73-73"><a href="#cb73-73" tabindex="-1"></a>      <span class="fu">left_join</span>(MESURE_COLMATAGE,</span>
-<span id="cb73-74"><a href="#cb73-74" tabindex="-1"></a>                <span class="at">by=</span><span class="fu">c</span>(<span class="st">&quot;OPE_ID&quot;</span><span class="ot">=</span><span class="st">&quot;MCO_OPE_ID&quot;</span>)),</span>
-<span id="cb73-75"><a href="#cb73-75" tabindex="-1"></a>    <span class="at">by=</span><span class="st">&quot;Code_station_SANDRE&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb73-76"><a href="#cb73-76" tabindex="-1"></a>        <span class="fu">distinct</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb73-77"><a href="#cb73-77" tabindex="-1"></a>  </span>
-<span id="cb73-78"><a href="#cb73-78" tabindex="-1"></a>  <span class="co">#JOINTURE 2 = Ajouter le détail des transects de chaque opération</span></span>
-<span id="cb73-79"><a href="#cb73-79" tabindex="-1"></a>  <span class="fu">left_join</span>(</span>
-<span id="cb73-80"><a href="#cb73-80" tabindex="-1"></a>    TRANSECT <span class="sc">%&gt;%</span> </span>
-<span id="cb73-81"><a href="#cb73-81" tabindex="-1"></a>       <span class="fu">mutate</span>(</span>
-<span id="cb73-82"><a href="#cb73-82" tabindex="-1"></a>         <span class="fu">across</span>(</span>
-<span id="cb73-83"><a href="#cb73-83" tabindex="-1"></a>          <span class="fu">c</span>(TRA_LPB, </span>
-<span id="cb73-84"><a href="#cb73-84" tabindex="-1"></a>            TRA_L_MOUILLEE,</span>
-<span id="cb73-85"><a href="#cb73-85" tabindex="-1"></a>            TRA_HPB),</span>
-<span id="cb73-86"><a href="#cb73-86" tabindex="-1"></a>          as.numeric),</span>
-<span id="cb73-87"><a href="#cb73-87" tabindex="-1"></a>        <span class="at">Code_station_SANDRE   =</span> <span class="fu">substr</span>(TRA_CODE, <span class="dv">1</span>, <span class="dv">8</span>),</span>
-<span id="cb73-88"><a href="#cb73-88" tabindex="-1"></a>        <span class="at">code_pt_prelevement =</span> <span class="fu">substr</span>(TRA_CODE, <span class="dv">9</span>, <span class="dv">11</span>),</span>
-<span id="cb73-89"><a href="#cb73-89" tabindex="-1"></a>        <span class="at">num_operation        =</span> <span class="fu">substr</span>(TRA_CODE, <span class="dv">12</span>, <span class="dv">14</span>)</span>
-<span id="cb73-90"><a href="#cb73-90" tabindex="-1"></a>        ), </span>
-<span id="cb73-91"><a href="#cb73-91" tabindex="-1"></a>      <span class="at">by=</span><span class="fu">c</span>(<span class="st">&quot;Code_station_SANDRE&quot;</span> , </span>
-<span id="cb73-92"><a href="#cb73-92" tabindex="-1"></a>           <span class="st">&quot;code_pt_prelevement&quot;</span>,</span>
-<span id="cb73-93"><a href="#cb73-93" tabindex="-1"></a>           <span class="st">&quot;num_operation&quot;</span> ))<span class="sc">%&gt;%</span></span>
-<span id="cb73-94"><a href="#cb73-94" tabindex="-1"></a>  <span class="fu">distinct</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb73-95"><a href="#cb73-95" tabindex="-1"></a>  </span>
-<span id="cb73-96"><a href="#cb73-96" tabindex="-1"></a>  <span class="co">#JOINTURE 3 = Ajouter le détail des points de chaque transect</span></span>
-<span id="cb73-97"><a href="#cb73-97" tabindex="-1"></a>  <span class="fu">left_join</span>(POINT <span class="sc">%&gt;%</span> </span>
-<span id="cb73-98"><a href="#cb73-98" tabindex="-1"></a>              <span class="fu">select</span>(<span class="sc">-</span>POI_CODE,</span>
-<span id="cb73-99"><a href="#cb73-99" tabindex="-1"></a>                     <span class="sc">-</span>POI_EN_EAU)<span class="sc">%&gt;%</span></span>
-<span id="cb73-100"><a href="#cb73-100" tabindex="-1"></a>              <span class="fu">mutate</span>(</span>
-<span id="cb73-101"><a href="#cb73-101" tabindex="-1"></a>                <span class="fu">across</span>(</span>
-<span id="cb73-102"><a href="#cb73-102" tabindex="-1"></a>                  <span class="fu">c</span>(POI_NUM, </span>
-<span id="cb73-103"><a href="#cb73-103" tabindex="-1"></a>                    POI_PROFONDEUR),</span>
-<span id="cb73-104"><a href="#cb73-104" tabindex="-1"></a>                  as.numeric)) <span class="sc">%&gt;%</span> </span>
-<span id="cb73-105"><a href="#cb73-105" tabindex="-1"></a>              <span class="fu">left_join</span>(</span>
-<span id="cb73-106"><a href="#cb73-106" tabindex="-1"></a>                SUBSTRAT <span class="sc">%&gt;%</span> </span>
-<span id="cb73-107"><a href="#cb73-107" tabindex="-1"></a>                  <span class="fu">select</span>(SUB_CODE,</span>
-<span id="cb73-108"><a href="#cb73-108" tabindex="-1"></a>                         SUB_LIBELLE,</span>
-<span id="cb73-109"><a href="#cb73-109" tabindex="-1"></a>                         SUB_DEFINITION),</span>
-<span id="cb73-110"><a href="#cb73-110" tabindex="-1"></a>                  <span class="at">by=</span><span class="st">&quot;SUB_CODE&quot;</span>),</span>
-<span id="cb73-111"><a href="#cb73-111" tabindex="-1"></a>            <span class="at">by=</span><span class="fu">c</span>(<span class="st">&quot;TRA_ID&quot;</span><span class="ot">=</span><span class="st">&quot;POI_TRA_ID&quot;</span>)) </span></code></pre></div>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" tabindex="-1"></a>Table_ope_transect_point <span class="ot">&lt;-</span> Table_stations_etude <span class="sc">%&gt;%</span></span>
+<span id="cb74-2"><a href="#cb74-2" tabindex="-1"></a>  <span class="co">#ajouter le libelle du type de projection des coordonnées</span></span>
+<span id="cb74-3"><a href="#cb74-3" tabindex="-1"></a>  <span class="fu">left_join</span>(TYPE_PROJECTION <span class="sc">%&gt;%</span> </span>
+<span id="cb74-4"><a href="#cb74-4" tabindex="-1"></a>              <span class="fu">select</span>(TPR_CODE,TPR_LIBELLE),</span>
+<span id="cb74-5"><a href="#cb74-5" tabindex="-1"></a>              <span class="at">by=</span><span class="fu">c</span>(<span class="st">&quot;SME_PROJ_STATION_MESURE_EAUX_SURFACE&quot;</span><span class="ot">=</span><span class="st">&quot;TPR_CODE&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb74-6"><a href="#cb74-6" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>SME_EST_SANDRE, </span>
+<span id="cb74-7"><a href="#cb74-7" tabindex="-1"></a>         <span class="sc">-</span>SME_PROJ_STATION_MESURE_EAUX_SURFACE) <span class="sc">%&gt;%</span> </span>
+<span id="cb74-8"><a href="#cb74-8" tabindex="-1"></a>  </span>
+<span id="cb74-9"><a href="#cb74-9" tabindex="-1"></a>  <span class="co">#JOINTURE 1 = ajouter le détail des opérations de chaque station</span></span>
+<span id="cb74-10"><a href="#cb74-10" tabindex="-1"></a>  <span class="fu">left_join</span>(</span>
+<span id="cb74-11"><a href="#cb74-11" tabindex="-1"></a>    OPERATION <span class="sc">%&gt;%</span></span>
+<span id="cb74-12"><a href="#cb74-12" tabindex="-1"></a>      <span class="fu">select</span>(OPE_ID,</span>
+<span id="cb74-13"><a href="#cb74-13" tabindex="-1"></a>             OPE_CODE,</span>
+<span id="cb74-14"><a href="#cb74-14" tabindex="-1"></a>             OPE_VERSION_PROTOCOLE,</span>
+<span id="cb74-15"><a href="#cb74-15" tabindex="-1"></a>             OPE_VERSION_PROTOCOLE_LIBELLE,</span>
+<span id="cb74-16"><a href="#cb74-16" tabindex="-1"></a>             OPE_DATE_REALISATION,</span>
+<span id="cb74-17"><a href="#cb74-17" tabindex="-1"></a>             OPE_DATE_PREVUE,</span>
+<span id="cb74-18"><a href="#cb74-18" tabindex="-1"></a>             OPE_DEBIT_MESURE,</span>
+<span id="cb74-19"><a href="#cb74-19" tabindex="-1"></a>             OPE_DEBIT_STATION_HYDRO,</span>
+<span id="cb74-20"><a href="#cb74-20" tabindex="-1"></a>             OPE_LPBEV, <span class="co">#largeur plein bord évaluée</span></span>
+<span id="cb74-21"><a href="#cb74-21" tabindex="-1"></a>             OPE_LMEV, <span class="co">#largeur mouillée évaluée</span></span>
+<span id="cb74-22"><a href="#cb74-22" tabindex="-1"></a>             OPE_LR, <span class="co">#longueur réelle</span></span>
+<span id="cb74-23"><a href="#cb74-23" tabindex="-1"></a>             OPE_LTH, <span class="co">#longueur théorique</span></span>
+<span id="cb74-24"><a href="#cb74-24" tabindex="-1"></a>             OPE_DIP, <span class="co">#Distance inter point</span></span>
+<span id="cb74-25"><a href="#cb74-25" tabindex="-1"></a>             OPE_PENTE_LIGNE_EAU,</span>
+<span id="cb74-26"><a href="#cb74-26" tabindex="-1"></a>             OPE_PENTE_EVALUEE,</span>
+<span id="cb74-27"><a href="#cb74-27" tabindex="-1"></a>             OPE_OBSERVATIONS,</span>
+<span id="cb74-28"><a href="#cb74-28" tabindex="-1"></a>             OPE_PRES_HABITATS_MARGINAUX, <span class="co">#présence habitats marginaux</span></span>
+<span id="cb74-29"><a href="#cb74-29" tabindex="-1"></a>             OPE_DESCRIPTION_HABITATS_MARGINAUX,</span>
+<span id="cb74-30"><a href="#cb74-30" tabindex="-1"></a>             PRO_CODE, <span class="co">#statut de programmation</span></span>
+<span id="cb74-31"><a href="#cb74-31" tabindex="-1"></a>             VAL_CODE, <span class="co">#statut de validation de l&#39;opération</span></span>
+<span id="cb74-32"><a href="#cb74-32" tabindex="-1"></a>             QUA_CODE, <span class="co">#niveau de qualification de l&#39;opération</span></span>
+<span id="cb74-33"><a href="#cb74-33" tabindex="-1"></a>             PPR_ID, <span class="co">#code du point de prélèvement</span></span>
+<span id="cb74-34"><a href="#cb74-34" tabindex="-1"></a>             RME_CODE_SANDRE, <span class="co">#identifiant réseau de mesure</span></span>
+<span id="cb74-35"><a href="#cb74-35" tabindex="-1"></a>             RME_NOM <span class="co">#libelle du réseau de mesure</span></span>
+<span id="cb74-36"><a href="#cb74-36" tabindex="-1"></a>             ) <span class="sc">%&gt;%</span> </span>
+<span id="cb74-37"><a href="#cb74-37" tabindex="-1"></a>      <span class="fu">mutate</span>(</span>
+<span id="cb74-38"><a href="#cb74-38" tabindex="-1"></a>        <span class="fu">across</span>(</span>
+<span id="cb74-39"><a href="#cb74-39" tabindex="-1"></a>          <span class="fu">c</span>(OPE_DEBIT_MESURE, </span>
+<span id="cb74-40"><a href="#cb74-40" tabindex="-1"></a>            OPE_DEBIT_STATION_HYDRO,</span>
+<span id="cb74-41"><a href="#cb74-41" tabindex="-1"></a>            OPE_LPBEV, </span>
+<span id="cb74-42"><a href="#cb74-42" tabindex="-1"></a>            OPE_LMEV, </span>
+<span id="cb74-43"><a href="#cb74-43" tabindex="-1"></a>            OPE_LR, </span>
+<span id="cb74-44"><a href="#cb74-44" tabindex="-1"></a>            OPE_LTH, </span>
+<span id="cb74-45"><a href="#cb74-45" tabindex="-1"></a>            OPE_DIP,</span>
+<span id="cb74-46"><a href="#cb74-46" tabindex="-1"></a>            OPE_PENTE_LIGNE_EAU,</span>
+<span id="cb74-47"><a href="#cb74-47" tabindex="-1"></a>            OPE_PENTE_EVALUEE),</span>
+<span id="cb74-48"><a href="#cb74-48" tabindex="-1"></a>          as.numeric),</span>
+<span id="cb74-49"><a href="#cb74-49" tabindex="-1"></a>      <span class="co">#la variable OPE_CODE est une concaténation du code station, </span></span>
+<span id="cb74-50"><a href="#cb74-50" tabindex="-1"></a>      <span class="co">#point de prélèvement et numéro de l&#39;opération</span></span>
+<span id="cb74-51"><a href="#cb74-51" tabindex="-1"></a>      <span class="co">#on crée 3 variables à partir de celle-ci afin d&#39;isoler le code station </span></span>
+<span id="cb74-52"><a href="#cb74-52" tabindex="-1"></a>      <span class="co">#et faciliter les jointures</span></span>
+<span id="cb74-53"><a href="#cb74-53" tabindex="-1"></a>        <span class="at">Code_station_SANDRE   =</span> <span class="fu">substr</span>(OPE_CODE, <span class="dv">1</span>, <span class="dv">8</span>),</span>
+<span id="cb74-54"><a href="#cb74-54" tabindex="-1"></a>        <span class="at">code_pt_prelevement =</span> <span class="fu">substr</span>(OPE_CODE, <span class="dv">9</span>, <span class="dv">11</span>),</span>
+<span id="cb74-55"><a href="#cb74-55" tabindex="-1"></a>        <span class="at">num_operation        =</span> <span class="fu">substr</span>(OPE_CODE, <span class="dv">12</span>, <span class="dv">14</span>)</span>
+<span id="cb74-56"><a href="#cb74-56" tabindex="-1"></a>        ) <span class="sc">%&gt;%</span></span>
+<span id="cb74-57"><a href="#cb74-57" tabindex="-1"></a>      <span class="fu">left_join</span>(POINT_PRELEVEMENT <span class="sc">%&gt;%</span> </span>
+<span id="cb74-58"><a href="#cb74-58" tabindex="-1"></a>                  <span class="fu">select</span>(SME_CD_STATION_MESURE_EAUX_SURFACE,</span>
+<span id="cb74-59"><a href="#cb74-59" tabindex="-1"></a>                         PPR_CD_POINT_EAUX_SURF,</span>
+<span id="cb74-60"><a href="#cb74-60" tabindex="-1"></a>                         PPR_COORD_X_AVAL_POINT_EAUX_SURF,</span>
+<span id="cb74-61"><a href="#cb74-61" tabindex="-1"></a>                         PPR_COORD_Y_AVAL_POINT_EAUX_SURF),</span>
+<span id="cb74-62"><a href="#cb74-62" tabindex="-1"></a>                <span class="at">b=</span><span class="fu">c</span>(<span class="st">&quot;Code_station_SANDRE&quot;</span> <span class="ot">=</span> <span class="st">&quot;SME_CD_STATION_MESURE_EAUX_SURFACE&quot;</span>,</span>
+<span id="cb74-63"><a href="#cb74-63" tabindex="-1"></a>                    <span class="st">&quot;code_pt_prelevement&quot;</span> <span class="ot">=</span> <span class="st">&quot;PPR_CD_POINT_EAUX_SURF&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb74-64"><a href="#cb74-64" tabindex="-1"></a>      <span class="fu">left_join</span>(PROGRAMMATION <span class="sc">%&gt;%</span> <span class="co">#ajouter les libelles d&#39;avancement correspondants</span></span>
+<span id="cb74-65"><a href="#cb74-65" tabindex="-1"></a>                  <span class="fu">select</span>(PRO_CODE,PRO_LIBELLE),</span>
+<span id="cb74-66"><a href="#cb74-66" tabindex="-1"></a>                <span class="at">by=</span><span class="st">&quot;PRO_CODE&quot;</span>)<span class="sc">%&gt;%</span></span>
+<span id="cb74-67"><a href="#cb74-67" tabindex="-1"></a>      <span class="fu">left_join</span>(QUALIFICATION <span class="sc">%&gt;%</span> <span class="co">#ajouter les libelles de qualification correspondants</span></span>
+<span id="cb74-68"><a href="#cb74-68" tabindex="-1"></a>                  <span class="fu">select</span>(QUA_CODE,QUA_LIBELLE),</span>
+<span id="cb74-69"><a href="#cb74-69" tabindex="-1"></a>                <span class="at">by=</span><span class="st">&quot;QUA_CODE&quot;</span>)<span class="sc">%&gt;%</span></span>
+<span id="cb74-70"><a href="#cb74-70" tabindex="-1"></a>      <span class="fu">left_join</span>(VALIDATION <span class="sc">%&gt;%</span> <span class="co">#ajouter les libelles de qualification correspondants</span></span>
+<span id="cb74-71"><a href="#cb74-71" tabindex="-1"></a>                  <span class="fu">select</span>(VAL_CODE,VAL_LIBELLE),</span>
+<span id="cb74-72"><a href="#cb74-72" tabindex="-1"></a>                <span class="at">by=</span><span class="st">&quot;VAL_CODE&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb74-73"><a href="#cb74-73" tabindex="-1"></a>      <span class="fu">left_join</span>(MESURE_COLMATAGE,</span>
+<span id="cb74-74"><a href="#cb74-74" tabindex="-1"></a>                <span class="at">by=</span><span class="fu">c</span>(<span class="st">&quot;OPE_ID&quot;</span><span class="ot">=</span><span class="st">&quot;MCO_OPE_ID&quot;</span>)),</span>
+<span id="cb74-75"><a href="#cb74-75" tabindex="-1"></a>    <span class="at">by=</span><span class="st">&quot;Code_station_SANDRE&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb74-76"><a href="#cb74-76" tabindex="-1"></a>        <span class="fu">distinct</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb74-77"><a href="#cb74-77" tabindex="-1"></a>  </span>
+<span id="cb74-78"><a href="#cb74-78" tabindex="-1"></a>  <span class="co">#JOINTURE 2 = Ajouter le détail des transects de chaque opération</span></span>
+<span id="cb74-79"><a href="#cb74-79" tabindex="-1"></a>  <span class="fu">left_join</span>(</span>
+<span id="cb74-80"><a href="#cb74-80" tabindex="-1"></a>    TRANSECT <span class="sc">%&gt;%</span> </span>
+<span id="cb74-81"><a href="#cb74-81" tabindex="-1"></a>       <span class="fu">mutate</span>(</span>
+<span id="cb74-82"><a href="#cb74-82" tabindex="-1"></a>         <span class="fu">across</span>(</span>
+<span id="cb74-83"><a href="#cb74-83" tabindex="-1"></a>          <span class="fu">c</span>(TRA_LPB, </span>
+<span id="cb74-84"><a href="#cb74-84" tabindex="-1"></a>            TRA_L_MOUILLEE,</span>
+<span id="cb74-85"><a href="#cb74-85" tabindex="-1"></a>            TRA_HPB),</span>
+<span id="cb74-86"><a href="#cb74-86" tabindex="-1"></a>          as.numeric),</span>
+<span id="cb74-87"><a href="#cb74-87" tabindex="-1"></a>        <span class="at">Code_station_SANDRE   =</span> <span class="fu">substr</span>(TRA_CODE, <span class="dv">1</span>, <span class="dv">8</span>),</span>
+<span id="cb74-88"><a href="#cb74-88" tabindex="-1"></a>        <span class="at">code_pt_prelevement =</span> <span class="fu">substr</span>(TRA_CODE, <span class="dv">9</span>, <span class="dv">11</span>),</span>
+<span id="cb74-89"><a href="#cb74-89" tabindex="-1"></a>        <span class="at">num_operation        =</span> <span class="fu">substr</span>(TRA_CODE, <span class="dv">12</span>, <span class="dv">14</span>)</span>
+<span id="cb74-90"><a href="#cb74-90" tabindex="-1"></a>        ), </span>
+<span id="cb74-91"><a href="#cb74-91" tabindex="-1"></a>      <span class="at">by=</span><span class="fu">c</span>(<span class="st">&quot;Code_station_SANDRE&quot;</span> , </span>
+<span id="cb74-92"><a href="#cb74-92" tabindex="-1"></a>           <span class="st">&quot;code_pt_prelevement&quot;</span>,</span>
+<span id="cb74-93"><a href="#cb74-93" tabindex="-1"></a>           <span class="st">&quot;num_operation&quot;</span> ))<span class="sc">%&gt;%</span></span>
+<span id="cb74-94"><a href="#cb74-94" tabindex="-1"></a>  <span class="fu">distinct</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb74-95"><a href="#cb74-95" tabindex="-1"></a>  </span>
+<span id="cb74-96"><a href="#cb74-96" tabindex="-1"></a>  <span class="co">#JOINTURE 3 = Ajouter le détail des points de chaque transect</span></span>
+<span id="cb74-97"><a href="#cb74-97" tabindex="-1"></a>  <span class="fu">left_join</span>(POINT <span class="sc">%&gt;%</span> </span>
+<span id="cb74-98"><a href="#cb74-98" tabindex="-1"></a>              <span class="fu">select</span>(<span class="sc">-</span>POI_CODE,</span>
+<span id="cb74-99"><a href="#cb74-99" tabindex="-1"></a>                     <span class="sc">-</span>POI_EN_EAU)<span class="sc">%&gt;%</span></span>
+<span id="cb74-100"><a href="#cb74-100" tabindex="-1"></a>              <span class="fu">mutate</span>(</span>
+<span id="cb74-101"><a href="#cb74-101" tabindex="-1"></a>                <span class="fu">across</span>(</span>
+<span id="cb74-102"><a href="#cb74-102" tabindex="-1"></a>                  <span class="fu">c</span>(POI_NUM, </span>
+<span id="cb74-103"><a href="#cb74-103" tabindex="-1"></a>                    POI_PROFONDEUR),</span>
+<span id="cb74-104"><a href="#cb74-104" tabindex="-1"></a>                  as.numeric)) <span class="sc">%&gt;%</span> </span>
+<span id="cb74-105"><a href="#cb74-105" tabindex="-1"></a>              <span class="fu">left_join</span>(</span>
+<span id="cb74-106"><a href="#cb74-106" tabindex="-1"></a>                SUBSTRAT <span class="sc">%&gt;%</span> </span>
+<span id="cb74-107"><a href="#cb74-107" tabindex="-1"></a>                  <span class="fu">select</span>(SUB_CODE,</span>
+<span id="cb74-108"><a href="#cb74-108" tabindex="-1"></a>                         SUB_LIBELLE,</span>
+<span id="cb74-109"><a href="#cb74-109" tabindex="-1"></a>                         SUB_DEFINITION),</span>
+<span id="cb74-110"><a href="#cb74-110" tabindex="-1"></a>                  <span class="at">by=</span><span class="st">&quot;SUB_CODE&quot;</span>),</span>
+<span id="cb74-111"><a href="#cb74-111" tabindex="-1"></a>            <span class="at">by=</span><span class="fu">c</span>(<span class="st">&quot;TRA_ID&quot;</span><span class="ot">=</span><span class="st">&quot;POI_TRA_ID&quot;</span>)) </span></code></pre></div>
 <div id="table-contenant-les-données-dopérations-transects-et-berges" class="section level3">
 <h3>2) Table contenant les données d’opérations, transects et
 berges</h3>
-<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" tabindex="-1"></a>Table_transect_facies_berge <span class="ot">&lt;-</span> Table_stations_etude <span class="sc">%&gt;%</span></span>
-<span id="cb74-2"><a href="#cb74-2" tabindex="-1"></a>  <span class="fu">left_join</span>(TYPE_PROJECTION <span class="sc">%&gt;%</span> </span>
-<span id="cb74-3"><a href="#cb74-3" tabindex="-1"></a>              <span class="fu">select</span>(TPR_CODE,TPR_LIBELLE),</span>
-<span id="cb74-4"><a href="#cb74-4" tabindex="-1"></a>              <span class="at">by=</span><span class="fu">c</span>(<span class="st">&quot;SME_PROJ_STATION_MESURE_EAUX_SURFACE&quot;</span><span class="ot">=</span><span class="st">&quot;TPR_CODE&quot;</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb74-5"><a href="#cb74-5" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>SME_EST_SANDRE, </span>
-<span id="cb74-6"><a href="#cb74-6" tabindex="-1"></a>         <span class="sc">-</span>SME_PROJ_STATION_MESURE_EAUX_SURFACE) <span class="sc">%&gt;%</span> </span>
-<span id="cb74-7"><a href="#cb74-7" tabindex="-1"></a>  </span>
-<span id="cb74-8"><a href="#cb74-8" tabindex="-1"></a>  <span class="co">#JOINTURE 1 = ajouter le détail des opérations de chaque station</span></span>
-<span id="cb74-9"><a href="#cb74-9" tabindex="-1"></a>  <span class="fu">left_join</span>(</span>
-<span id="cb74-10"><a href="#cb74-10" tabindex="-1"></a>    OPERATION <span class="sc">%&gt;%</span></span>
-<span id="cb74-11"><a href="#cb74-11" tabindex="-1"></a>      <span class="fu">select</span>(OPE_ID,</span>
-<span id="cb74-12"><a href="#cb74-12" tabindex="-1"></a>             OPE_CODE,</span>
-<span id="cb74-13"><a href="#cb74-13" tabindex="-1"></a>             OPE_VERSION_PROTOCOLE,</span>
-<span id="cb74-14"><a href="#cb74-14" tabindex="-1"></a>             OPE_VERSION_PROTOCOLE_LIBELLE,</span>
-<span id="cb74-15"><a href="#cb74-15" tabindex="-1"></a>             OPE_DATE_REALISATION,</span>
-<span id="cb74-16"><a href="#cb74-16" tabindex="-1"></a>             OPE_DATE_PREVUE,</span>
-<span id="cb74-17"><a href="#cb74-17" tabindex="-1"></a>             CRI_CODE_G, <span class="co">#continuité ripisylve berge Gauche</span></span>
-<span id="cb74-18"><a href="#cb74-18" tabindex="-1"></a>             CRI_CODE_D, <span class="co">#continuité ripisylve berge Droite</span></span>
-<span id="cb74-19"><a href="#cb74-19" tabindex="-1"></a>             ) <span class="sc">%&gt;%</span> </span>
-<span id="cb74-20"><a href="#cb74-20" tabindex="-1"></a>      <span class="fu">mutate</span>(</span>
-<span id="cb74-21"><a href="#cb74-21" tabindex="-1"></a>      <span class="co">#la variable OPE_CODE est une concaténation du code station, </span></span>
-<span id="cb74-22"><a href="#cb74-22" tabindex="-1"></a>      <span class="co">#point de prélèvement et numéro de l&#39;opération</span></span>
-<span id="cb74-23"><a href="#cb74-23" tabindex="-1"></a>      <span class="co">#on crée 3 variables à partir de celle-ci afin d&#39;isoler le code station </span></span>
-<span id="cb74-24"><a href="#cb74-24" tabindex="-1"></a>      <span class="co">#et faciliter les jointures</span></span>
-<span id="cb74-25"><a href="#cb74-25" tabindex="-1"></a>        <span class="at">Code_station_SANDRE   =</span> <span class="fu">substr</span>(OPE_CODE, <span class="dv">1</span>, <span class="dv">8</span>),</span>
-<span id="cb74-26"><a href="#cb74-26" tabindex="-1"></a>        <span class="at">code_pt_prelevement =</span> <span class="fu">substr</span>(OPE_CODE, <span class="dv">9</span>, <span class="dv">11</span>),</span>
-<span id="cb74-27"><a href="#cb74-27" tabindex="-1"></a>        <span class="at">num_operation        =</span> <span class="fu">substr</span>(OPE_CODE, <span class="dv">12</span>, <span class="dv">14</span>)</span>
-<span id="cb74-28"><a href="#cb74-28" tabindex="-1"></a>        ) <span class="sc">%&gt;%</span></span>
-<span id="cb74-29"><a href="#cb74-29" tabindex="-1"></a>      <span class="fu">left_join</span>(CONTINUITE_RIPISYLVE <span class="sc">%&gt;%</span> </span>
-<span id="cb74-30"><a href="#cb74-30" tabindex="-1"></a>                  <span class="fu">select</span>(CRI_CODE,</span>
-<span id="cb74-31"><a href="#cb74-31" tabindex="-1"></a>                         CRI_LIBELLE) <span class="sc">%&gt;%</span> </span>
-<span id="cb74-32"><a href="#cb74-32" tabindex="-1"></a>                  <span class="fu">rename</span>(<span class="at">CRI_CODE_D=</span> CRI_CODE,</span>
-<span id="cb74-33"><a href="#cb74-33" tabindex="-1"></a>                         <span class="at">CRI_LIBELLE_D=</span>CRI_LIBELLE),</span>
-<span id="cb74-34"><a href="#cb74-34" tabindex="-1"></a>                <span class="at">by=</span><span class="st">&quot;CRI_CODE_D&quot;</span>)<span class="sc">%&gt;%</span> </span>
-<span id="cb74-35"><a href="#cb74-35" tabindex="-1"></a>      <span class="fu">left_join</span>(CONTINUITE_RIPISYLVE <span class="sc">%&gt;%</span> </span>
-<span id="cb74-36"><a href="#cb74-36" tabindex="-1"></a>                  <span class="fu">select</span>(CRI_CODE,</span>
-<span id="cb74-37"><a href="#cb74-37" tabindex="-1"></a>                         CRI_LIBELLE) <span class="sc">%&gt;%</span> </span>
-<span id="cb74-38"><a href="#cb74-38" tabindex="-1"></a>                  <span class="fu">rename</span>(<span class="at">CRI_CODE_G=</span> CRI_CODE,</span>
-<span id="cb74-39"><a href="#cb74-39" tabindex="-1"></a>                         <span class="at">CRI_LIBELLE_G=</span>CRI_LIBELLE),</span>
-<span id="cb74-40"><a href="#cb74-40" tabindex="-1"></a>                <span class="at">by=</span><span class="st">&quot;CRI_CODE_G&quot;</span>),</span>
-<span id="cb74-41"><a href="#cb74-41" tabindex="-1"></a>    <span class="at">by=</span><span class="st">&quot;Code_station_SANDRE&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb74-42"><a href="#cb74-42" tabindex="-1"></a>  <span class="fu">distinct</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb74-43"><a href="#cb74-43" tabindex="-1"></a>  </span>
-<span id="cb74-44"><a href="#cb74-44" tabindex="-1"></a>  <span class="co">#JOINTURE 2 = Ajouter le détail des transects de chaque opération</span></span>
-<span id="cb74-45"><a href="#cb74-45" tabindex="-1"></a>  <span class="fu">left_join</span>(</span>
-<span id="cb74-46"><a href="#cb74-46" tabindex="-1"></a>    TRANSECT <span class="sc">%&gt;%</span> </span>
-<span id="cb74-47"><a href="#cb74-47" tabindex="-1"></a>       <span class="fu">mutate</span>(</span>
-<span id="cb74-48"><a href="#cb74-48" tabindex="-1"></a>         <span class="fu">across</span>(</span>
-<span id="cb74-49"><a href="#cb74-49" tabindex="-1"></a>          <span class="fu">c</span>(TRA_LPB, </span>
-<span id="cb74-50"><a href="#cb74-50" tabindex="-1"></a>            TRA_L_MOUILLEE,</span>
-<span id="cb74-51"><a href="#cb74-51" tabindex="-1"></a>            TRA_HPB),</span>
-<span id="cb74-52"><a href="#cb74-52" tabindex="-1"></a>          as.numeric),</span>
-<span id="cb74-53"><a href="#cb74-53" tabindex="-1"></a>        <span class="at">Code_station_SANDRE   =</span> <span class="fu">substr</span>(TRA_CODE, <span class="dv">1</span>, <span class="dv">8</span>),</span>
-<span id="cb74-54"><a href="#cb74-54" tabindex="-1"></a>        <span class="at">code_pt_prelevement =</span> <span class="fu">substr</span>(TRA_CODE, <span class="dv">9</span>, <span class="dv">11</span>),</span>
-<span id="cb74-55"><a href="#cb74-55" tabindex="-1"></a>        <span class="at">num_operation        =</span> <span class="fu">substr</span>(TRA_CODE, <span class="dv">12</span>, <span class="dv">14</span>)</span>
-<span id="cb74-56"><a href="#cb74-56" tabindex="-1"></a>        ) <span class="sc">%&gt;%</span> </span>
-<span id="cb74-57"><a href="#cb74-57" tabindex="-1"></a>      <span class="fu">left_join</span>(FACIES_SIMPLIFIE <span class="sc">%&gt;%</span> </span>
-<span id="cb74-58"><a href="#cb74-58" tabindex="-1"></a>                  <span class="fu">select</span>(FSI_CODE,FSI_LIBELLE),</span>
-<span id="cb74-59"><a href="#cb74-59" tabindex="-1"></a>                <span class="at">by=</span><span class="st">&quot;FSI_CODE&quot;</span></span>
-<span id="cb74-60"><a href="#cb74-60" tabindex="-1"></a>                ),</span>
-<span id="cb74-61"><a href="#cb74-61" tabindex="-1"></a>      <span class="at">by=</span><span class="fu">c</span>(<span class="st">&quot;Code_station_SANDRE&quot;</span> , </span>
-<span id="cb74-62"><a href="#cb74-62" tabindex="-1"></a>           <span class="st">&quot;code_pt_prelevement&quot;</span>,</span>
-<span id="cb74-63"><a href="#cb74-63" tabindex="-1"></a>           <span class="st">&quot;num_operation&quot;</span> ))<span class="sc">%&gt;%</span></span>
-<span id="cb74-64"><a href="#cb74-64" tabindex="-1"></a>  </span>
-<span id="cb74-65"><a href="#cb74-65" tabindex="-1"></a>  <span class="co">#JOINTURE 3 = ajouter les informations des berges</span></span>
-<span id="cb74-66"><a href="#cb74-66" tabindex="-1"></a>  <span class="fu">left_join</span>(BERGE <span class="sc">%&gt;%</span> </span>
-<span id="cb74-67"><a href="#cb74-67" tabindex="-1"></a>                  <span class="fu">select</span>(BER_ID,</span>
-<span id="cb74-68"><a href="#cb74-68" tabindex="-1"></a>                         BER_TRA_ID,</span>
-<span id="cb74-69"><a href="#cb74-69" tabindex="-1"></a>                         BER_RIVE,</span>
-<span id="cb74-70"><a href="#cb74-70" tabindex="-1"></a>                         SDO_CODE,</span>
-<span id="cb74-71"><a href="#cb74-71" tabindex="-1"></a>                         ERI_CODE),</span>
-<span id="cb74-72"><a href="#cb74-72" tabindex="-1"></a>                <span class="at">by=</span><span class="fu">c</span>(<span class="st">&quot;TRA_ID&quot;</span><span class="ot">=</span><span class="st">&quot;BER_TRA_ID&quot;</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb74-73"><a href="#cb74-73" tabindex="-1"></a>  <span class="co">#JOINTURE finales = ajouter les informations des strates, et de la végétation</span></span>
-<span id="cb74-74"><a href="#cb74-74" tabindex="-1"></a>  <span class="fu">left_join</span>(STRATE,</span>
-<span id="cb74-75"><a href="#cb74-75" tabindex="-1"></a>            <span class="at">by=</span><span class="fu">c</span>(<span class="st">&quot;BER_ID&quot;</span><span class="ot">=</span><span class="st">&quot;STR_BER_ID&quot;</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb74-76"><a href="#cb74-76" tabindex="-1"></a>  <span class="fu">left_join</span>(TYPE_STRATE,</span>
-<span id="cb74-77"><a href="#cb74-77" tabindex="-1"></a>            <span class="at">by=</span><span class="fu">c</span>(<span class="st">&quot;STR_TST_ID&quot;</span><span class="ot">=</span><span class="st">&quot;TST_ID&quot;</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb74-78"><a href="#cb74-78" tabindex="-1"></a>  <span class="fu">left_join</span>(STRATE_DOMINANTE <span class="sc">%&gt;%</span> </span>
-<span id="cb74-79"><a href="#cb74-79" tabindex="-1"></a>                  <span class="fu">select</span>(SDO_CODE,</span>
-<span id="cb74-80"><a href="#cb74-80" tabindex="-1"></a>                         SDO_LIBELLE),</span>
-<span id="cb74-81"><a href="#cb74-81" tabindex="-1"></a>                <span class="at">by=</span><span class="st">&quot;SDO_CODE&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb74-82"><a href="#cb74-82" tabindex="-1"></a>  <span class="fu">left_join</span>(EPAISSEUR_VEGETATION <span class="sc">%&gt;%</span> </span>
-<span id="cb74-83"><a href="#cb74-83" tabindex="-1"></a>              <span class="fu">select</span>(eve_CODE,</span>
-<span id="cb74-84"><a href="#cb74-84" tabindex="-1"></a>              eve_LIBELLE) <span class="sc">%&gt;%</span> </span>
-<span id="cb74-85"><a href="#cb74-85" tabindex="-1"></a>              <span class="fu">mutate</span>(<span class="at">ligne =</span> <span class="fu">as.character</span>(<span class="fu">row_number</span>())),</span>
-<span id="cb74-86"><a href="#cb74-86" tabindex="-1"></a>            <span class="at">by=</span><span class="fu">c</span>(<span class="st">&quot;STR_EVE_ID&quot;</span><span class="ot">=</span><span class="st">&quot;ligne&quot;</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb74-87"><a href="#cb74-87" tabindex="-1"></a>  <span class="co">#supprimer les doublons s&#39;il y en a</span></span>
-<span id="cb74-88"><a href="#cb74-88" tabindex="-1"></a>  <span class="fu">distinct</span>() </span></code></pre></div>
-</div>
-<div id="table-contenant-les-données-dopérations-et-granulométrie-wolman" class="section level3">
-<h3>3) Table contenant les données d’opérations et granulométrie
-(wolman)</h3>
-<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" tabindex="-1"></a>Table_granulo <span class="ot">&lt;-</span> Table_stations_etude <span class="sc">%&gt;%</span></span>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" tabindex="-1"></a>Table_transect_facies_berge <span class="ot">&lt;-</span> Table_stations_etude <span class="sc">%&gt;%</span></span>
 <span id="cb75-2"><a href="#cb75-2" tabindex="-1"></a>  <span class="fu">left_join</span>(TYPE_PROJECTION <span class="sc">%&gt;%</span> </span>
 <span id="cb75-3"><a href="#cb75-3" tabindex="-1"></a>              <span class="fu">select</span>(TPR_CODE,TPR_LIBELLE),</span>
 <span id="cb75-4"><a href="#cb75-4" tabindex="-1"></a>              <span class="at">by=</span><span class="fu">c</span>(<span class="st">&quot;SME_PROJ_STATION_MESURE_EAUX_SURFACE&quot;</span><span class="ot">=</span><span class="st">&quot;TPR_CODE&quot;</span>)) <span class="sc">%&gt;%</span> </span>
@@ -4530,54 +4424,149 @@ berges</h3>
 <span id="cb75-14"><a href="#cb75-14" tabindex="-1"></a>             OPE_VERSION_PROTOCOLE_LIBELLE,</span>
 <span id="cb75-15"><a href="#cb75-15" tabindex="-1"></a>             OPE_DATE_REALISATION,</span>
 <span id="cb75-16"><a href="#cb75-16" tabindex="-1"></a>             OPE_DATE_PREVUE,</span>
-<span id="cb75-17"><a href="#cb75-17" tabindex="-1"></a>             PRO_CODE,</span>
-<span id="cb75-18"><a href="#cb75-18" tabindex="-1"></a>             VAL_CODE, <span class="co">#statut de validation de l&#39;opération</span></span>
-<span id="cb75-19"><a href="#cb75-19" tabindex="-1"></a>             QUA_CODE, <span class="co">#niveau de qualification de l&#39;opération</span></span>
-<span id="cb75-20"><a href="#cb75-20" tabindex="-1"></a>             PPR_ID, <span class="co">#code du point de prélèvement</span></span>
-<span id="cb75-21"><a href="#cb75-21" tabindex="-1"></a>             RME_CODE_SANDRE, <span class="co">#identifiant réseau de mesure</span></span>
-<span id="cb75-22"><a href="#cb75-22" tabindex="-1"></a>             RME_NOM <span class="co">#libelle du réseau de mesure</span></span>
-<span id="cb75-23"><a href="#cb75-23" tabindex="-1"></a>             ) <span class="sc">%&gt;%</span> </span>
-<span id="cb75-24"><a href="#cb75-24" tabindex="-1"></a>      <span class="fu">mutate</span>(</span>
-<span id="cb75-25"><a href="#cb75-25" tabindex="-1"></a>      <span class="co">#la variable OPE_CODE est une concaténation du code station, </span></span>
-<span id="cb75-26"><a href="#cb75-26" tabindex="-1"></a>      <span class="co">#point de prélèvement et numéro de l&#39;opération</span></span>
-<span id="cb75-27"><a href="#cb75-27" tabindex="-1"></a>      <span class="co">#on crée 3 variables à partir de celle-ci afin d&#39;isoler le code station </span></span>
-<span id="cb75-28"><a href="#cb75-28" tabindex="-1"></a>      <span class="co">#et faciliter les jointures</span></span>
-<span id="cb75-29"><a href="#cb75-29" tabindex="-1"></a>        <span class="at">Code_station_SANDRE   =</span> <span class="fu">substr</span>(OPE_CODE, <span class="dv">1</span>, <span class="dv">8</span>),</span>
-<span id="cb75-30"><a href="#cb75-30" tabindex="-1"></a>        <span class="at">code_pt_prelevement =</span> <span class="fu">substr</span>(OPE_CODE, <span class="dv">9</span>, <span class="dv">11</span>),</span>
-<span id="cb75-31"><a href="#cb75-31" tabindex="-1"></a>        <span class="at">num_operation        =</span> <span class="fu">substr</span>(OPE_CODE, <span class="dv">12</span>, <span class="dv">14</span>)</span>
-<span id="cb75-32"><a href="#cb75-32" tabindex="-1"></a>        ) <span class="sc">%&gt;%</span></span>
-<span id="cb75-33"><a href="#cb75-33" tabindex="-1"></a>      <span class="fu">left_join</span>(QUALIFICATION <span class="sc">%&gt;%</span> <span class="co">#ajouter les libelles de qualification correspondants</span></span>
-<span id="cb75-34"><a href="#cb75-34" tabindex="-1"></a>                  <span class="fu">select</span>(QUA_CODE,QUA_LIBELLE),</span>
-<span id="cb75-35"><a href="#cb75-35" tabindex="-1"></a>                <span class="at">by=</span><span class="st">&quot;QUA_CODE&quot;</span>)<span class="sc">%&gt;%</span></span>
-<span id="cb75-36"><a href="#cb75-36" tabindex="-1"></a>      <span class="fu">left_join</span>(VALIDATION <span class="sc">%&gt;%</span> <span class="co">#ajouter les libelles de qualification correspondants</span></span>
-<span id="cb75-37"><a href="#cb75-37" tabindex="-1"></a>                  <span class="fu">select</span>(VAL_CODE,VAL_LIBELLE),</span>
-<span id="cb75-38"><a href="#cb75-38" tabindex="-1"></a>                <span class="at">by=</span><span class="st">&quot;VAL_CODE&quot;</span>),</span>
-<span id="cb75-39"><a href="#cb75-39" tabindex="-1"></a>    <span class="at">by=</span><span class="st">&quot;Code_station_SANDRE&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb75-40"><a href="#cb75-40" tabindex="-1"></a>  </span>
-<span id="cb75-41"><a href="#cb75-41" tabindex="-1"></a>  <span class="co">#Jointure 2 = ajout granulométrie (Wolman)</span></span>
-<span id="cb75-42"><a href="#cb75-42" tabindex="-1"></a>  <span class="fu">left_join</span>( MESURE_GRANULOMETRIE,</span>
-<span id="cb75-43"><a href="#cb75-43" tabindex="-1"></a>             <span class="at">by=</span><span class="fu">c</span>(<span class="st">&quot;OPE_ID&quot;</span><span class="ot">=</span><span class="st">&quot;MGR_OPE_ID&quot;</span>))</span></code></pre></div>
+<span id="cb75-17"><a href="#cb75-17" tabindex="-1"></a>             CRI_CODE_G, <span class="co">#continuité ripisylve berge Gauche</span></span>
+<span id="cb75-18"><a href="#cb75-18" tabindex="-1"></a>             CRI_CODE_D, <span class="co">#continuité ripisylve berge Droite</span></span>
+<span id="cb75-19"><a href="#cb75-19" tabindex="-1"></a>             ) <span class="sc">%&gt;%</span> </span>
+<span id="cb75-20"><a href="#cb75-20" tabindex="-1"></a>      <span class="fu">mutate</span>(</span>
+<span id="cb75-21"><a href="#cb75-21" tabindex="-1"></a>      <span class="co">#la variable OPE_CODE est une concaténation du code station, </span></span>
+<span id="cb75-22"><a href="#cb75-22" tabindex="-1"></a>      <span class="co">#point de prélèvement et numéro de l&#39;opération</span></span>
+<span id="cb75-23"><a href="#cb75-23" tabindex="-1"></a>      <span class="co">#on crée 3 variables à partir de celle-ci afin d&#39;isoler le code station </span></span>
+<span id="cb75-24"><a href="#cb75-24" tabindex="-1"></a>      <span class="co">#et faciliter les jointures</span></span>
+<span id="cb75-25"><a href="#cb75-25" tabindex="-1"></a>        <span class="at">Code_station_SANDRE   =</span> <span class="fu">substr</span>(OPE_CODE, <span class="dv">1</span>, <span class="dv">8</span>),</span>
+<span id="cb75-26"><a href="#cb75-26" tabindex="-1"></a>        <span class="at">code_pt_prelevement =</span> <span class="fu">substr</span>(OPE_CODE, <span class="dv">9</span>, <span class="dv">11</span>),</span>
+<span id="cb75-27"><a href="#cb75-27" tabindex="-1"></a>        <span class="at">num_operation        =</span> <span class="fu">substr</span>(OPE_CODE, <span class="dv">12</span>, <span class="dv">14</span>)</span>
+<span id="cb75-28"><a href="#cb75-28" tabindex="-1"></a>        ) <span class="sc">%&gt;%</span></span>
+<span id="cb75-29"><a href="#cb75-29" tabindex="-1"></a>      <span class="fu">left_join</span>(CONTINUITE_RIPISYLVE <span class="sc">%&gt;%</span> </span>
+<span id="cb75-30"><a href="#cb75-30" tabindex="-1"></a>                  <span class="fu">select</span>(CRI_CODE,</span>
+<span id="cb75-31"><a href="#cb75-31" tabindex="-1"></a>                         CRI_LIBELLE) <span class="sc">%&gt;%</span> </span>
+<span id="cb75-32"><a href="#cb75-32" tabindex="-1"></a>                  <span class="fu">rename</span>(<span class="at">CRI_CODE_D=</span> CRI_CODE,</span>
+<span id="cb75-33"><a href="#cb75-33" tabindex="-1"></a>                         <span class="at">CRI_LIBELLE_D=</span>CRI_LIBELLE),</span>
+<span id="cb75-34"><a href="#cb75-34" tabindex="-1"></a>                <span class="at">by=</span><span class="st">&quot;CRI_CODE_D&quot;</span>)<span class="sc">%&gt;%</span> </span>
+<span id="cb75-35"><a href="#cb75-35" tabindex="-1"></a>      <span class="fu">left_join</span>(CONTINUITE_RIPISYLVE <span class="sc">%&gt;%</span> </span>
+<span id="cb75-36"><a href="#cb75-36" tabindex="-1"></a>                  <span class="fu">select</span>(CRI_CODE,</span>
+<span id="cb75-37"><a href="#cb75-37" tabindex="-1"></a>                         CRI_LIBELLE) <span class="sc">%&gt;%</span> </span>
+<span id="cb75-38"><a href="#cb75-38" tabindex="-1"></a>                  <span class="fu">rename</span>(<span class="at">CRI_CODE_G=</span> CRI_CODE,</span>
+<span id="cb75-39"><a href="#cb75-39" tabindex="-1"></a>                         <span class="at">CRI_LIBELLE_G=</span>CRI_LIBELLE),</span>
+<span id="cb75-40"><a href="#cb75-40" tabindex="-1"></a>                <span class="at">by=</span><span class="st">&quot;CRI_CODE_G&quot;</span>),</span>
+<span id="cb75-41"><a href="#cb75-41" tabindex="-1"></a>    <span class="at">by=</span><span class="st">&quot;Code_station_SANDRE&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb75-42"><a href="#cb75-42" tabindex="-1"></a>  <span class="fu">distinct</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb75-43"><a href="#cb75-43" tabindex="-1"></a>  </span>
+<span id="cb75-44"><a href="#cb75-44" tabindex="-1"></a>  <span class="co">#JOINTURE 2 = Ajouter le détail des transects de chaque opération</span></span>
+<span id="cb75-45"><a href="#cb75-45" tabindex="-1"></a>  <span class="fu">left_join</span>(</span>
+<span id="cb75-46"><a href="#cb75-46" tabindex="-1"></a>    TRANSECT <span class="sc">%&gt;%</span> </span>
+<span id="cb75-47"><a href="#cb75-47" tabindex="-1"></a>       <span class="fu">mutate</span>(</span>
+<span id="cb75-48"><a href="#cb75-48" tabindex="-1"></a>         <span class="fu">across</span>(</span>
+<span id="cb75-49"><a href="#cb75-49" tabindex="-1"></a>          <span class="fu">c</span>(TRA_LPB, </span>
+<span id="cb75-50"><a href="#cb75-50" tabindex="-1"></a>            TRA_L_MOUILLEE,</span>
+<span id="cb75-51"><a href="#cb75-51" tabindex="-1"></a>            TRA_HPB),</span>
+<span id="cb75-52"><a href="#cb75-52" tabindex="-1"></a>          as.numeric),</span>
+<span id="cb75-53"><a href="#cb75-53" tabindex="-1"></a>        <span class="at">Code_station_SANDRE   =</span> <span class="fu">substr</span>(TRA_CODE, <span class="dv">1</span>, <span class="dv">8</span>),</span>
+<span id="cb75-54"><a href="#cb75-54" tabindex="-1"></a>        <span class="at">code_pt_prelevement =</span> <span class="fu">substr</span>(TRA_CODE, <span class="dv">9</span>, <span class="dv">11</span>),</span>
+<span id="cb75-55"><a href="#cb75-55" tabindex="-1"></a>        <span class="at">num_operation        =</span> <span class="fu">substr</span>(TRA_CODE, <span class="dv">12</span>, <span class="dv">14</span>)</span>
+<span id="cb75-56"><a href="#cb75-56" tabindex="-1"></a>        ) <span class="sc">%&gt;%</span> </span>
+<span id="cb75-57"><a href="#cb75-57" tabindex="-1"></a>      <span class="fu">left_join</span>(FACIES_SIMPLIFIE <span class="sc">%&gt;%</span> </span>
+<span id="cb75-58"><a href="#cb75-58" tabindex="-1"></a>                  <span class="fu">select</span>(FSI_CODE,FSI_LIBELLE),</span>
+<span id="cb75-59"><a href="#cb75-59" tabindex="-1"></a>                <span class="at">by=</span><span class="st">&quot;FSI_CODE&quot;</span></span>
+<span id="cb75-60"><a href="#cb75-60" tabindex="-1"></a>                ),</span>
+<span id="cb75-61"><a href="#cb75-61" tabindex="-1"></a>      <span class="at">by=</span><span class="fu">c</span>(<span class="st">&quot;Code_station_SANDRE&quot;</span> , </span>
+<span id="cb75-62"><a href="#cb75-62" tabindex="-1"></a>           <span class="st">&quot;code_pt_prelevement&quot;</span>,</span>
+<span id="cb75-63"><a href="#cb75-63" tabindex="-1"></a>           <span class="st">&quot;num_operation&quot;</span> ))<span class="sc">%&gt;%</span></span>
+<span id="cb75-64"><a href="#cb75-64" tabindex="-1"></a>  </span>
+<span id="cb75-65"><a href="#cb75-65" tabindex="-1"></a>  <span class="co">#JOINTURE 3 = ajouter les informations des berges</span></span>
+<span id="cb75-66"><a href="#cb75-66" tabindex="-1"></a>  <span class="fu">left_join</span>(BERGE <span class="sc">%&gt;%</span> </span>
+<span id="cb75-67"><a href="#cb75-67" tabindex="-1"></a>                  <span class="fu">select</span>(BER_ID,</span>
+<span id="cb75-68"><a href="#cb75-68" tabindex="-1"></a>                         BER_TRA_ID,</span>
+<span id="cb75-69"><a href="#cb75-69" tabindex="-1"></a>                         BER_RIVE,</span>
+<span id="cb75-70"><a href="#cb75-70" tabindex="-1"></a>                         BER_PRES_ABSENCE_STRATE_ARBOREE,</span>
+<span id="cb75-71"><a href="#cb75-71" tabindex="-1"></a>                         BER_PRES_ABSENCE_STRATE_ARBUSTIVE,</span>
+<span id="cb75-72"><a href="#cb75-72" tabindex="-1"></a>                         BER_PRES_ABSENCE_STRATE_HERBACEE,</span>
+<span id="cb75-73"><a href="#cb75-73" tabindex="-1"></a>                         SDO_CODE,</span>
+<span id="cb75-74"><a href="#cb75-74" tabindex="-1"></a>                         ERI_CODE),</span>
+<span id="cb75-75"><a href="#cb75-75" tabindex="-1"></a>                <span class="at">by=</span><span class="fu">c</span>(<span class="st">&quot;TRA_ID&quot;</span><span class="ot">=</span><span class="st">&quot;BER_TRA_ID&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb75-76"><a href="#cb75-76" tabindex="-1"></a>  <span class="co">#JOINTURE finales = ajouter les informations des strates, et de la végétation</span></span>
+<span id="cb75-77"><a href="#cb75-77" tabindex="-1"></a>  <span class="fu">left_join</span>(STRATE,</span>
+<span id="cb75-78"><a href="#cb75-78" tabindex="-1"></a>            <span class="at">by=</span><span class="fu">c</span>(<span class="st">&quot;BER_ID&quot;</span><span class="ot">=</span><span class="st">&quot;STR_BER_ID&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb75-79"><a href="#cb75-79" tabindex="-1"></a>  <span class="fu">left_join</span>(TYPE_STRATE,</span>
+<span id="cb75-80"><a href="#cb75-80" tabindex="-1"></a>            <span class="at">by=</span><span class="fu">c</span>(<span class="st">&quot;STR_TST_ID&quot;</span><span class="ot">=</span><span class="st">&quot;TST_ID&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb75-81"><a href="#cb75-81" tabindex="-1"></a>  <span class="fu">left_join</span>(STRATE_DOMINANTE <span class="sc">%&gt;%</span> </span>
+<span id="cb75-82"><a href="#cb75-82" tabindex="-1"></a>                  <span class="fu">select</span>(SDO_CODE,</span>
+<span id="cb75-83"><a href="#cb75-83" tabindex="-1"></a>                         SDO_LIBELLE),</span>
+<span id="cb75-84"><a href="#cb75-84" tabindex="-1"></a>                <span class="at">by=</span><span class="st">&quot;SDO_CODE&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb75-85"><a href="#cb75-85" tabindex="-1"></a>  <span class="fu">left_join</span>(EPAISSEUR_VEGETATION <span class="sc">%&gt;%</span> </span>
+<span id="cb75-86"><a href="#cb75-86" tabindex="-1"></a>              <span class="fu">select</span>(eve_CODE,</span>
+<span id="cb75-87"><a href="#cb75-87" tabindex="-1"></a>              eve_LIBELLE) <span class="sc">%&gt;%</span> </span>
+<span id="cb75-88"><a href="#cb75-88" tabindex="-1"></a>              <span class="fu">mutate</span>(<span class="at">ligne =</span> <span class="fu">as.character</span>(<span class="fu">row_number</span>())),</span>
+<span id="cb75-89"><a href="#cb75-89" tabindex="-1"></a>            <span class="at">by=</span><span class="fu">c</span>(<span class="st">&quot;STR_EVE_ID&quot;</span><span class="ot">=</span><span class="st">&quot;ligne&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb75-90"><a href="#cb75-90" tabindex="-1"></a>  <span class="co">#supprimer les doublons s&#39;il y en a</span></span>
+<span id="cb75-91"><a href="#cb75-91" tabindex="-1"></a>  <span class="fu">distinct</span>() </span></code></pre></div>
+</div>
+<div id="table-contenant-les-données-dopérations-et-granulométrie-wolman" class="section level3">
+<h3>3) Table contenant les données d’opérations et granulométrie
+(wolman)</h3>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" tabindex="-1"></a>Table_granulo <span class="ot">&lt;-</span> Table_stations_etude <span class="sc">%&gt;%</span></span>
+<span id="cb76-2"><a href="#cb76-2" tabindex="-1"></a>  <span class="fu">left_join</span>(TYPE_PROJECTION <span class="sc">%&gt;%</span> </span>
+<span id="cb76-3"><a href="#cb76-3" tabindex="-1"></a>              <span class="fu">select</span>(TPR_CODE,TPR_LIBELLE),</span>
+<span id="cb76-4"><a href="#cb76-4" tabindex="-1"></a>              <span class="at">by=</span><span class="fu">c</span>(<span class="st">&quot;SME_PROJ_STATION_MESURE_EAUX_SURFACE&quot;</span><span class="ot">=</span><span class="st">&quot;TPR_CODE&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb76-5"><a href="#cb76-5" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>SME_EST_SANDRE, </span>
+<span id="cb76-6"><a href="#cb76-6" tabindex="-1"></a>         <span class="sc">-</span>SME_PROJ_STATION_MESURE_EAUX_SURFACE) <span class="sc">%&gt;%</span> </span>
+<span id="cb76-7"><a href="#cb76-7" tabindex="-1"></a>  </span>
+<span id="cb76-8"><a href="#cb76-8" tabindex="-1"></a>  <span class="co">#JOINTURE 1 = ajouter le détail des opérations de chaque station</span></span>
+<span id="cb76-9"><a href="#cb76-9" tabindex="-1"></a>  <span class="fu">left_join</span>(</span>
+<span id="cb76-10"><a href="#cb76-10" tabindex="-1"></a>    OPERATION <span class="sc">%&gt;%</span></span>
+<span id="cb76-11"><a href="#cb76-11" tabindex="-1"></a>      <span class="fu">select</span>(OPE_ID,</span>
+<span id="cb76-12"><a href="#cb76-12" tabindex="-1"></a>             OPE_CODE,</span>
+<span id="cb76-13"><a href="#cb76-13" tabindex="-1"></a>             OPE_VERSION_PROTOCOLE,</span>
+<span id="cb76-14"><a href="#cb76-14" tabindex="-1"></a>             OPE_VERSION_PROTOCOLE_LIBELLE,</span>
+<span id="cb76-15"><a href="#cb76-15" tabindex="-1"></a>             OPE_DATE_REALISATION,</span>
+<span id="cb76-16"><a href="#cb76-16" tabindex="-1"></a>             OPE_DATE_PREVUE,</span>
+<span id="cb76-17"><a href="#cb76-17" tabindex="-1"></a>             PRO_CODE,</span>
+<span id="cb76-18"><a href="#cb76-18" tabindex="-1"></a>             VAL_CODE, <span class="co">#statut de validation de l&#39;opération</span></span>
+<span id="cb76-19"><a href="#cb76-19" tabindex="-1"></a>             QUA_CODE, <span class="co">#niveau de qualification de l&#39;opération</span></span>
+<span id="cb76-20"><a href="#cb76-20" tabindex="-1"></a>             PPR_ID, <span class="co">#code du point de prélèvement</span></span>
+<span id="cb76-21"><a href="#cb76-21" tabindex="-1"></a>             RME_CODE_SANDRE, <span class="co">#identifiant réseau de mesure</span></span>
+<span id="cb76-22"><a href="#cb76-22" tabindex="-1"></a>             RME_NOM <span class="co">#libelle du réseau de mesure</span></span>
+<span id="cb76-23"><a href="#cb76-23" tabindex="-1"></a>             ) <span class="sc">%&gt;%</span> </span>
+<span id="cb76-24"><a href="#cb76-24" tabindex="-1"></a>      <span class="fu">mutate</span>(</span>
+<span id="cb76-25"><a href="#cb76-25" tabindex="-1"></a>      <span class="co">#la variable OPE_CODE est une concaténation du code station, </span></span>
+<span id="cb76-26"><a href="#cb76-26" tabindex="-1"></a>      <span class="co">#point de prélèvement et numéro de l&#39;opération</span></span>
+<span id="cb76-27"><a href="#cb76-27" tabindex="-1"></a>      <span class="co">#on crée 3 variables à partir de celle-ci afin d&#39;isoler le code station </span></span>
+<span id="cb76-28"><a href="#cb76-28" tabindex="-1"></a>      <span class="co">#et faciliter les jointures</span></span>
+<span id="cb76-29"><a href="#cb76-29" tabindex="-1"></a>        <span class="at">Code_station_SANDRE   =</span> <span class="fu">substr</span>(OPE_CODE, <span class="dv">1</span>, <span class="dv">8</span>),</span>
+<span id="cb76-30"><a href="#cb76-30" tabindex="-1"></a>        <span class="at">code_pt_prelevement =</span> <span class="fu">substr</span>(OPE_CODE, <span class="dv">9</span>, <span class="dv">11</span>),</span>
+<span id="cb76-31"><a href="#cb76-31" tabindex="-1"></a>        <span class="at">num_operation        =</span> <span class="fu">substr</span>(OPE_CODE, <span class="dv">12</span>, <span class="dv">14</span>)</span>
+<span id="cb76-32"><a href="#cb76-32" tabindex="-1"></a>        ) <span class="sc">%&gt;%</span></span>
+<span id="cb76-33"><a href="#cb76-33" tabindex="-1"></a>      <span class="fu">left_join</span>(QUALIFICATION <span class="sc">%&gt;%</span> <span class="co">#ajouter les libelles de qualification correspondants</span></span>
+<span id="cb76-34"><a href="#cb76-34" tabindex="-1"></a>                  <span class="fu">select</span>(QUA_CODE,QUA_LIBELLE),</span>
+<span id="cb76-35"><a href="#cb76-35" tabindex="-1"></a>                <span class="at">by=</span><span class="st">&quot;QUA_CODE&quot;</span>)<span class="sc">%&gt;%</span></span>
+<span id="cb76-36"><a href="#cb76-36" tabindex="-1"></a>      <span class="fu">left_join</span>(VALIDATION <span class="sc">%&gt;%</span> <span class="co">#ajouter les libelles de qualification correspondants</span></span>
+<span id="cb76-37"><a href="#cb76-37" tabindex="-1"></a>                  <span class="fu">select</span>(VAL_CODE,VAL_LIBELLE),</span>
+<span id="cb76-38"><a href="#cb76-38" tabindex="-1"></a>                <span class="at">by=</span><span class="st">&quot;VAL_CODE&quot;</span>),</span>
+<span id="cb76-39"><a href="#cb76-39" tabindex="-1"></a>    <span class="at">by=</span><span class="st">&quot;Code_station_SANDRE&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb76-40"><a href="#cb76-40" tabindex="-1"></a>  </span>
+<span id="cb76-41"><a href="#cb76-41" tabindex="-1"></a>  <span class="co">#Jointure 2 = ajout granulométrie (Wolman)</span></span>
+<span id="cb76-42"><a href="#cb76-42" tabindex="-1"></a>  <span class="fu">left_join</span>( MESURE_GRANULOMETRIE,</span>
+<span id="cb76-43"><a href="#cb76-43" tabindex="-1"></a>             <span class="at">by=</span><span class="fu">c</span>(<span class="st">&quot;OPE_ID&quot;</span><span class="ot">=</span><span class="st">&quot;MGR_OPE_ID&quot;</span>))</span></code></pre></div>
 </div>
 <div id="télécharger-les-données-sous-forme-de-rdata" class="section level3">
 <h3>3) Télécharger les données sous forme de Rdata</h3>
-<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" tabindex="-1"></a><span class="fu">save</span>(</span>
-<span id="cb76-2"><a href="#cb76-2" tabindex="-1"></a>     Table_stations_etude,</span>
-<span id="cb76-3"><a href="#cb76-3" tabindex="-1"></a>     Table_ope_transect_point,</span>
-<span id="cb76-4"><a href="#cb76-4" tabindex="-1"></a>     Table_transect_facies_berge,</span>
-<span id="cb76-5"><a href="#cb76-5" tabindex="-1"></a>     Table_granulo,</span>
-<span id="cb76-6"><a href="#cb76-6" tabindex="-1"></a>     <span class="at">file =</span> <span class="st">&quot;../Data/clean_data/CARHYCE_data.rda&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" tabindex="-1"></a><span class="fu">save</span>(</span>
+<span id="cb77-2"><a href="#cb77-2" tabindex="-1"></a>     Table_stations_etude,</span>
+<span id="cb77-3"><a href="#cb77-3" tabindex="-1"></a>     Table_ope_transect_point,</span>
+<span id="cb77-4"><a href="#cb77-4" tabindex="-1"></a>     Table_transect_facies_berge,</span>
+<span id="cb77-5"><a href="#cb77-5" tabindex="-1"></a>     Table_granulo,</span>
+<span id="cb77-6"><a href="#cb77-6" tabindex="-1"></a>     <span class="at">file =</span> <span class="st">&quot;../Data/clean_data/CARHYCE_data.rda&quot;</span>)</span></code></pre></div>
 </div>
 <div id="aperçu-des-tables-créées" class="section level3">
 <h3>4) Aperçu des tables créées</h3>
 <p><strong>Table_ope_transect_point:</strong></p>
-<div class="datatables html-widget html-fill-item" id="htmlwidget-8ba4cdd124ca48cabb39" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-8ba4cdd124ca48cabb39">{"x":{"filter":"none","vertical":false,"data":[["03233980","03233980","03233980","03233980","03233980"],["L'URE A SILLY-EN-GOUFFERN 2","L'URE A SILLY-EN-GOUFFERN 2","L'URE A SILLY-EN-GOUFFERN 2","L'URE A SILLY-EN-GOUFFERN 2","L'URE A SILLY-EN-GOUFFERN 2"],["L'Ure","L'Ure","L'Ure","L'Ure","L'Ure"],["61","61","61","61","61"],["486872.0","486872.0","486872.0","486872.0","486872.0"],["6854308.0","6854308.0","6854308.0","6854308.0","6854308.0"],["Seine-Normandie","Seine-Normandie","Seine-Normandie","Seine-Normandie","Seine-Normandie"],["Orne","Orne","Orne","Orne","Orne"],["Normandie","Normandie","Normandie","Normandie","Normandie"],["RCS","RCS","RCS","RCS","RCS"],["RGF93 / Lambert 93","RGF93 / Lambert 93","RGF93 / Lambert 93","RGF93 / Lambert 93","RGF93 / Lambert 93"],["655","655","655","655","655"],["03233980016001","03233980016001","03233980016001","03233980016001","03233980016001"],["2","2","2","2","2"],["2009-2016","2009-2016","2009-2016","2009-2016","2009-2016"],["","","","",""],["10/07/2010","10/07/2010","10/07/2010","10/07/2010","10/07/2010"],[null,null,null,null,null],[null,null,null,null,null],[null,null,null,null,null],[null,null,null,null,null],[null,null,null,null,null],[null,null,null,null,null],[null,null,null,null,null],[null,null,null,null,null],[null,null,null,null,null],["","","","",""],["false","false","false","false","false"],["","","","",""],["2","2","2","2","2"],["1","1","1","1","1"],["0","0","0","0","0"],["79771","79771","79771","79771","79771"],["","","","",""],["","","","",""],["016","016","016","016","016"],["001","001","001","001","001"],["486682.0","486682.0","486682.0","486682.0","486682.0"],["6854298.0","6854298.0","6854298.0","6854298.0","6854298.0"],["Opération effectuée","Opération effectuée","Opération effectuée","Opération effectuée","Opération effectuée"],["Non définissable","Non définissable","Non définissable","Non définissable","Non définissable"],["Qualifiée non validée","Qualifiée non validée","Qualifiée non validée","Qualifiée non validée","Qualifiée non validée"],["5233","5234","5235","5236","5237"],["A","B","A","B","A"],["1","1","2","2","3"],["null","null","null","null","null"],[null,null,null,null,null],[null,null,null,null,null],[null,null,null,null,null],[null,null,null,null,null],[null,null,null,null,null],[null,null,null,null,null],[null,null,null,null,null],[null,null,null,null,null],[null,null,null,null,null],[null,null,null,null,null],[null,null,null,null,null],[null,null,null,null,null],[null,null,null,null,null],[null,null,null,null,null],[null,null,null,null,null],[null,null,null,null,null],[null,null,null,null,null]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Code_station_SANDRE<\/th>\n      <th>SME_LB_STATION_MESURE_EAUX_SURFACE<\/th>\n      <th>SME_NOM_ENTITE_HYDROGRAPHIQUE<\/th>\n      <th>SME_CD_DEPARTEMENT<\/th>\n      <th>SME_COORD_X_STATION_MESURE_EAUX_SURFACE<\/th>\n      <th>SME_COORD_Y_STATION_MESURE_EAUX_SURFACE<\/th>\n      <th>Libelle_bassin<\/th>\n      <th>Libelle_departement<\/th>\n      <th>Region<\/th>\n      <th>reseau<\/th>\n      <th>TPR_LIBELLE<\/th>\n      <th>OPE_ID<\/th>\n      <th>OPE_CODE<\/th>\n      <th>OPE_VERSION_PROTOCOLE<\/th>\n      <th>OPE_VERSION_PROTOCOLE_LIBELLE<\/th>\n      <th>OPE_DATE_REALISATION<\/th>\n      <th>OPE_DATE_PREVUE<\/th>\n      <th>OPE_DEBIT_MESURE<\/th>\n      <th>OPE_DEBIT_STATION_HYDRO<\/th>\n      <th>OPE_LPBEV<\/th>\n      <th>OPE_LMEV<\/th>\n      <th>OPE_LR<\/th>\n      <th>OPE_LTH<\/th>\n      <th>OPE_DIP<\/th>\n      <th>OPE_PENTE_LIGNE_EAU<\/th>\n      <th>OPE_PENTE_EVALUEE<\/th>\n      <th>OPE_OBSERVATIONS<\/th>\n      <th>OPE_PRES_HABITATS_MARGINAUX<\/th>\n      <th>OPE_DESCRIPTION_HABITATS_MARGINAUX<\/th>\n      <th>PRO_CODE<\/th>\n      <th>VAL_CODE<\/th>\n      <th>QUA_CODE<\/th>\n      <th>PPR_ID<\/th>\n      <th>RME_CODE_SANDRE<\/th>\n      <th>RME_NOM<\/th>\n      <th>code_pt_prelevement<\/th>\n      <th>num_operation<\/th>\n      <th>PPR_COORD_X_AVAL_POINT_EAUX_SURF<\/th>\n      <th>PPR_COORD_Y_AVAL_POINT_EAUX_SURF<\/th>\n      <th>PRO_LIBELLE<\/th>\n      <th>QUA_LIBELLE<\/th>\n      <th>VAL_LIBELLE<\/th>\n      <th>MCO_ID<\/th>\n      <th>MCO_RADIER<\/th>\n      <th>MCO_POSITION_LATERALE<\/th>\n      <th>MCO_MESURE<\/th>\n      <th>TRA_ID<\/th>\n      <th>TRA_CODE<\/th>\n      <th>TRA_NUM<\/th>\n      <th>TRA_LPB<\/th>\n      <th>TRA_L_MOUILLEE<\/th>\n      <th>TRA_HPB<\/th>\n      <th>RDT_CODE<\/th>\n      <th>TRA_REMARQUES<\/th>\n      <th>TRA_OPE_ID<\/th>\n      <th>FSI_CODE<\/th>\n      <th>FAF_CODE<\/th>\n      <th>POI_ID<\/th>\n      <th>POI_NUM<\/th>\n      <th>POI_PROFONDEUR<\/th>\n      <th>SUB_CODE<\/th>\n      <th>SUB_LIBELLE<\/th>\n      <th>SUB_DEFINITION<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"pageLength":2,"columnDefs":[{"className":"dt-right","targets":[17,18,19,20,21,22,23,24,25,49,50,51,58,59]},{"name":"Code_station_SANDRE","targets":0},{"name":"SME_LB_STATION_MESURE_EAUX_SURFACE","targets":1},{"name":"SME_NOM_ENTITE_HYDROGRAPHIQUE","targets":2},{"name":"SME_CD_DEPARTEMENT","targets":3},{"name":"SME_COORD_X_STATION_MESURE_EAUX_SURFACE","targets":4},{"name":"SME_COORD_Y_STATION_MESURE_EAUX_SURFACE","targets":5},{"name":"Libelle_bassin","targets":6},{"name":"Libelle_departement","targets":7},{"name":"Region","targets":8},{"name":"reseau","targets":9},{"name":"TPR_LIBELLE","targets":10},{"name":"OPE_ID","targets":11},{"name":"OPE_CODE","targets":12},{"name":"OPE_VERSION_PROTOCOLE","targets":13},{"name":"OPE_VERSION_PROTOCOLE_LIBELLE","targets":14},{"name":"OPE_DATE_REALISATION","targets":15},{"name":"OPE_DATE_PREVUE","targets":16},{"name":"OPE_DEBIT_MESURE","targets":17},{"name":"OPE_DEBIT_STATION_HYDRO","targets":18},{"name":"OPE_LPBEV","targets":19},{"name":"OPE_LMEV","targets":20},{"name":"OPE_LR","targets":21},{"name":"OPE_LTH","targets":22},{"name":"OPE_DIP","targets":23},{"name":"OPE_PENTE_LIGNE_EAU","targets":24},{"name":"OPE_PENTE_EVALUEE","targets":25},{"name":"OPE_OBSERVATIONS","targets":26},{"name":"OPE_PRES_HABITATS_MARGINAUX","targets":27},{"name":"OPE_DESCRIPTION_HABITATS_MARGINAUX","targets":28},{"name":"PRO_CODE","targets":29},{"name":"VAL_CODE","targets":30},{"name":"QUA_CODE","targets":31},{"name":"PPR_ID","targets":32},{"name":"RME_CODE_SANDRE","targets":33},{"name":"RME_NOM","targets":34},{"name":"code_pt_prelevement","targets":35},{"name":"num_operation","targets":36},{"name":"PPR_COORD_X_AVAL_POINT_EAUX_SURF","targets":37},{"name":"PPR_COORD_Y_AVAL_POINT_EAUX_SURF","targets":38},{"name":"PRO_LIBELLE","targets":39},{"name":"QUA_LIBELLE","targets":40},{"name":"VAL_LIBELLE","targets":41},{"name":"MCO_ID","targets":42},{"name":"MCO_RADIER","targets":43},{"name":"MCO_POSITION_LATERALE","targets":44},{"name":"MCO_MESURE","targets":45},{"name":"TRA_ID","targets":46},{"name":"TRA_CODE","targets":47},{"name":"TRA_NUM","targets":48},{"name":"TRA_LPB","targets":49},{"name":"TRA_L_MOUILLEE","targets":50},{"name":"TRA_HPB","targets":51},{"name":"RDT_CODE","targets":52},{"name":"TRA_REMARQUES","targets":53},{"name":"TRA_OPE_ID","targets":54},{"name":"FSI_CODE","targets":55},{"name":"FAF_CODE","targets":56},{"name":"POI_ID","targets":57},{"name":"POI_NUM","targets":58},{"name":"POI_PROFONDEUR","targets":59},{"name":"SUB_CODE","targets":60},{"name":"SUB_LIBELLE","targets":61},{"name":"SUB_DEFINITION","targets":62}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[2,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-925241c1dedc479de501" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-925241c1dedc479de501">{"x":{"filter":"none","vertical":false,"data":[["03233980","03233980","03233980","03233980","03233980"],["L'URE A SILLY-EN-GOUFFERN 2","L'URE A SILLY-EN-GOUFFERN 2","L'URE A SILLY-EN-GOUFFERN 2","L'URE A SILLY-EN-GOUFFERN 2","L'URE A SILLY-EN-GOUFFERN 2"],["L'Ure","L'Ure","L'Ure","L'Ure","L'Ure"],["61","61","61","61","61"],["486872.0","486872.0","486872.0","486872.0","486872.0"],["6854308.0","6854308.0","6854308.0","6854308.0","6854308.0"],["Seine-Normandie","Seine-Normandie","Seine-Normandie","Seine-Normandie","Seine-Normandie"],["Orne","Orne","Orne","Orne","Orne"],["Normandie","Normandie","Normandie","Normandie","Normandie"],["RCS","RCS","RCS","RCS","RCS"],["RGF93 / Lambert 93","RGF93 / Lambert 93","RGF93 / Lambert 93","RGF93 / Lambert 93","RGF93 / Lambert 93"],["655","655","655","655","655"],["03233980016001","03233980016001","03233980016001","03233980016001","03233980016001"],["2","2","2","2","2"],["2009-2016","2009-2016","2009-2016","2009-2016","2009-2016"],["","","","",""],["10/07/2010","10/07/2010","10/07/2010","10/07/2010","10/07/2010"],[null,null,null,null,null],[null,null,null,null,null],[null,null,null,null,null],[null,null,null,null,null],[null,null,null,null,null],[null,null,null,null,null],[null,null,null,null,null],[null,null,null,null,null],[null,null,null,null,null],["","","","",""],["false","false","false","false","false"],["","","","",""],["2","2","2","2","2"],["1","1","1","1","1"],["0","0","0","0","0"],["79771","79771","79771","79771","79771"],["","","","",""],["","","","",""],["016","016","016","016","016"],["001","001","001","001","001"],["486682.0","486682.0","486682.0","486682.0","486682.0"],["6854298.0","6854298.0","6854298.0","6854298.0","6854298.0"],["Opération effectuée","Opération effectuée","Opération effectuée","Opération effectuée","Opération effectuée"],["Non définissable","Non définissable","Non définissable","Non définissable","Non définissable"],["Qualifiée non validée","Qualifiée non validée","Qualifiée non validée","Qualifiée non validée","Qualifiée non validée"],["5233","5234","5235","5236","5237"],["A","B","A","B","A"],["1","1","2","2","3"],["null","null","null","null","null"],[null,null,null,null,null],[null,null,null,null,null],[null,null,null,null,null],[null,null,null,null,null],[null,null,null,null,null],[null,null,null,null,null],[null,null,null,null,null],[null,null,null,null,null],[null,null,null,null,null],[null,null,null,null,null],[null,null,null,null,null],[null,null,null,null,null],[null,null,null,null,null],[null,null,null,null,null],[null,null,null,null,null],[null,null,null,null,null],[null,null,null,null,null]],"container":"<table class=\"display compact\">\n  <thead>\n    <tr>\n      <th>Code_station_SANDRE<\/th>\n      <th>SME_LB_STATION_MESURE_EAUX_SURFACE<\/th>\n      <th>SME_NOM_ENTITE_HYDROGRAPHIQUE<\/th>\n      <th>SME_CD_DEPARTEMENT<\/th>\n      <th>SME_COORD_X_STATION_MESURE_EAUX_SURFACE<\/th>\n      <th>SME_COORD_Y_STATION_MESURE_EAUX_SURFACE<\/th>\n      <th>Libelle_bassin<\/th>\n      <th>Libelle_departement<\/th>\n      <th>Region<\/th>\n      <th>reseau<\/th>\n      <th>TPR_LIBELLE<\/th>\n      <th>OPE_ID<\/th>\n      <th>OPE_CODE<\/th>\n      <th>OPE_VERSION_PROTOCOLE<\/th>\n      <th>OPE_VERSION_PROTOCOLE_LIBELLE<\/th>\n      <th>OPE_DATE_REALISATION<\/th>\n      <th>OPE_DATE_PREVUE<\/th>\n      <th>OPE_DEBIT_MESURE<\/th>\n      <th>OPE_DEBIT_STATION_HYDRO<\/th>\n      <th>OPE_LPBEV<\/th>\n      <th>OPE_LMEV<\/th>\n      <th>OPE_LR<\/th>\n      <th>OPE_LTH<\/th>\n      <th>OPE_DIP<\/th>\n      <th>OPE_PENTE_LIGNE_EAU<\/th>\n      <th>OPE_PENTE_EVALUEE<\/th>\n      <th>OPE_OBSERVATIONS<\/th>\n      <th>OPE_PRES_HABITATS_MARGINAUX<\/th>\n      <th>OPE_DESCRIPTION_HABITATS_MARGINAUX<\/th>\n      <th>PRO_CODE<\/th>\n      <th>VAL_CODE<\/th>\n      <th>QUA_CODE<\/th>\n      <th>PPR_ID<\/th>\n      <th>RME_CODE_SANDRE<\/th>\n      <th>RME_NOM<\/th>\n      <th>code_pt_prelevement<\/th>\n      <th>num_operation<\/th>\n      <th>PPR_COORD_X_AVAL_POINT_EAUX_SURF<\/th>\n      <th>PPR_COORD_Y_AVAL_POINT_EAUX_SURF<\/th>\n      <th>PRO_LIBELLE<\/th>\n      <th>QUA_LIBELLE<\/th>\n      <th>VAL_LIBELLE<\/th>\n      <th>MCO_ID<\/th>\n      <th>MCO_RADIER<\/th>\n      <th>MCO_POSITION_LATERALE<\/th>\n      <th>MCO_MESURE<\/th>\n      <th>TRA_ID<\/th>\n      <th>TRA_CODE<\/th>\n      <th>TRA_NUM<\/th>\n      <th>TRA_LPB<\/th>\n      <th>TRA_L_MOUILLEE<\/th>\n      <th>TRA_HPB<\/th>\n      <th>RDT_CODE<\/th>\n      <th>TRA_REMARQUES<\/th>\n      <th>TRA_OPE_ID<\/th>\n      <th>FSI_CODE<\/th>\n      <th>FAF_CODE<\/th>\n      <th>POI_ID<\/th>\n      <th>POI_NUM<\/th>\n      <th>POI_PROFONDEUR<\/th>\n      <th>SUB_CODE<\/th>\n      <th>SUB_LIBELLE<\/th>\n      <th>SUB_DEFINITION<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"pageLength":2,"columnDefs":[{"className":"dt-right","targets":[17,18,19,20,21,22,23,24,25,49,50,51,58,59]},{"name":"Code_station_SANDRE","targets":0},{"name":"SME_LB_STATION_MESURE_EAUX_SURFACE","targets":1},{"name":"SME_NOM_ENTITE_HYDROGRAPHIQUE","targets":2},{"name":"SME_CD_DEPARTEMENT","targets":3},{"name":"SME_COORD_X_STATION_MESURE_EAUX_SURFACE","targets":4},{"name":"SME_COORD_Y_STATION_MESURE_EAUX_SURFACE","targets":5},{"name":"Libelle_bassin","targets":6},{"name":"Libelle_departement","targets":7},{"name":"Region","targets":8},{"name":"reseau","targets":9},{"name":"TPR_LIBELLE","targets":10},{"name":"OPE_ID","targets":11},{"name":"OPE_CODE","targets":12},{"name":"OPE_VERSION_PROTOCOLE","targets":13},{"name":"OPE_VERSION_PROTOCOLE_LIBELLE","targets":14},{"name":"OPE_DATE_REALISATION","targets":15},{"name":"OPE_DATE_PREVUE","targets":16},{"name":"OPE_DEBIT_MESURE","targets":17},{"name":"OPE_DEBIT_STATION_HYDRO","targets":18},{"name":"OPE_LPBEV","targets":19},{"name":"OPE_LMEV","targets":20},{"name":"OPE_LR","targets":21},{"name":"OPE_LTH","targets":22},{"name":"OPE_DIP","targets":23},{"name":"OPE_PENTE_LIGNE_EAU","targets":24},{"name":"OPE_PENTE_EVALUEE","targets":25},{"name":"OPE_OBSERVATIONS","targets":26},{"name":"OPE_PRES_HABITATS_MARGINAUX","targets":27},{"name":"OPE_DESCRIPTION_HABITATS_MARGINAUX","targets":28},{"name":"PRO_CODE","targets":29},{"name":"VAL_CODE","targets":30},{"name":"QUA_CODE","targets":31},{"name":"PPR_ID","targets":32},{"name":"RME_CODE_SANDRE","targets":33},{"name":"RME_NOM","targets":34},{"name":"code_pt_prelevement","targets":35},{"name":"num_operation","targets":36},{"name":"PPR_COORD_X_AVAL_POINT_EAUX_SURF","targets":37},{"name":"PPR_COORD_Y_AVAL_POINT_EAUX_SURF","targets":38},{"name":"PRO_LIBELLE","targets":39},{"name":"QUA_LIBELLE","targets":40},{"name":"VAL_LIBELLE","targets":41},{"name":"MCO_ID","targets":42},{"name":"MCO_RADIER","targets":43},{"name":"MCO_POSITION_LATERALE","targets":44},{"name":"MCO_MESURE","targets":45},{"name":"TRA_ID","targets":46},{"name":"TRA_CODE","targets":47},{"name":"TRA_NUM","targets":48},{"name":"TRA_LPB","targets":49},{"name":"TRA_L_MOUILLEE","targets":50},{"name":"TRA_HPB","targets":51},{"name":"RDT_CODE","targets":52},{"name":"TRA_REMARQUES","targets":53},{"name":"TRA_OPE_ID","targets":54},{"name":"FSI_CODE","targets":55},{"name":"FAF_CODE","targets":56},{"name":"POI_ID","targets":57},{"name":"POI_NUM","targets":58},{"name":"POI_PROFONDEUR","targets":59},{"name":"SUB_CODE","targets":60},{"name":"SUB_LIBELLE","targets":61},{"name":"SUB_DEFINITION","targets":62}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[2,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
 <p><strong>Table_transect_facies_berge:</strong></p>
-<div class="datatables html-widget html-fill-item" id="htmlwidget-2472d09c21e06ea2e897" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-2472d09c21e06ea2e897">{"x":{"filter":"none","vertical":false,"data":[["03233980","03233980","03233980","03233980","03233980"],["L'URE A SILLY-EN-GOUFFERN 2","L'URE A SILLY-EN-GOUFFERN 2","L'URE A SILLY-EN-GOUFFERN 2","L'URE A SILLY-EN-GOUFFERN 2","L'URE A SILLY-EN-GOUFFERN 2"],["L'Ure","L'Ure","L'Ure","L'Ure","L'Ure"],["61","61","61","61","61"],["486872.0","486872.0","486872.0","486872.0","486872.0"],["6854308.0","6854308.0","6854308.0","6854308.0","6854308.0"],["Seine-Normandie","Seine-Normandie","Seine-Normandie","Seine-Normandie","Seine-Normandie"],["Orne","Orne","Orne","Orne","Orne"],["Normandie","Normandie","Normandie","Normandie","Normandie"],["RCS","RCS","RCS","RCS","RCS"],["RGF93 / Lambert 93","RGF93 / Lambert 93","RGF93 / Lambert 93","RGF93 / Lambert 93","RGF93 / Lambert 93"],["655","2272","2272","2272","2272"],["03233980016001","03233980016003","03233980016003","03233980016003","03233980016003"],["2","2","2","2","2"],["2009-2016","2009-2016","2009-2016","2009-2016","2009-2016"],["","19/07/2016","19/07/2016","19/07/2016","19/07/2016"],["10/07/2010","10/01/2016","10/01/2016","10/01/2016","10/01/2016"],["","4","4","4","4"],["","5","5","5","5"],["016","016","016","016","016"],["001","003","003","003","003"],[null,"continue","continue","continue","continue"],[null,"semi-continue","semi-continue","semi-continue","semi-continue"],[null,"34136","34136","34140","34140"],[null,"03233980016003_34136","03233980016003_34136","03233980016003_34140","03233980016003_34140"],[null,"1","1","3","3"],[null,7.2,7.2,6.6,6.6],[null,4.94,4.94,3.1,3.1],[null,1.35,1.35,1.4,1.4],[null,"2","2","2","2"],[null,"Pour tous les transects Ic égal 1 sauf précision","Pour tous les transects Ic égal 1 sauf précision","Prof mouilles P1/65cm P2/50cm P3/65cm P4/56cm","Prof mouilles P1/65cm P2/50cm P3/65cm P4/56cm"],[null,"2272","2272","2272","2272"],[null,"2","2","2","2"],[null,"6","6","6","6"],[null,"Plat lentique","Plat lentique","Plat lentique","Plat lentique"],[null,"68271","68272","68279","68280"],[null,"G","D","G","D"],[null,"1","1","1","1"],[null,"1","1","NR","NR"],[null,null,null,null,null],[null,null,null,null,null],[null,null,null,null,null],[null,null,null,null,null],[null,"Arborescente","Arborescente","Arborescente","Arborescente"],[null,null,null,null,null],[null,null,null,null,null]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Code_station_SANDRE<\/th>\n      <th>SME_LB_STATION_MESURE_EAUX_SURFACE<\/th>\n      <th>SME_NOM_ENTITE_HYDROGRAPHIQUE<\/th>\n      <th>SME_CD_DEPARTEMENT<\/th>\n      <th>SME_COORD_X_STATION_MESURE_EAUX_SURFACE<\/th>\n      <th>SME_COORD_Y_STATION_MESURE_EAUX_SURFACE<\/th>\n      <th>Libelle_bassin<\/th>\n      <th>Libelle_departement<\/th>\n      <th>Region<\/th>\n      <th>reseau<\/th>\n      <th>TPR_LIBELLE<\/th>\n      <th>OPE_ID<\/th>\n      <th>OPE_CODE<\/th>\n      <th>OPE_VERSION_PROTOCOLE<\/th>\n      <th>OPE_VERSION_PROTOCOLE_LIBELLE<\/th>\n      <th>OPE_DATE_REALISATION<\/th>\n      <th>OPE_DATE_PREVUE<\/th>\n      <th>CRI_CODE_G<\/th>\n      <th>CRI_CODE_D<\/th>\n      <th>code_pt_prelevement<\/th>\n      <th>num_operation<\/th>\n      <th>CRI_LIBELLE_D<\/th>\n      <th>CRI_LIBELLE_G<\/th>\n      <th>TRA_ID<\/th>\n      <th>TRA_CODE<\/th>\n      <th>TRA_NUM<\/th>\n      <th>TRA_LPB<\/th>\n      <th>TRA_L_MOUILLEE<\/th>\n      <th>TRA_HPB<\/th>\n      <th>RDT_CODE<\/th>\n      <th>TRA_REMARQUES<\/th>\n      <th>TRA_OPE_ID<\/th>\n      <th>FSI_CODE<\/th>\n      <th>FAF_CODE<\/th>\n      <th>FSI_LIBELLE<\/th>\n      <th>BER_ID<\/th>\n      <th>BER_RIVE<\/th>\n      <th>SDO_CODE<\/th>\n      <th>ERI_CODE<\/th>\n      <th>STR_ID<\/th>\n      <th>STR_TST_ID<\/th>\n      <th>STR_EVE_ID<\/th>\n      <th>TST_LIBELLE<\/th>\n      <th>SDO_LIBELLE<\/th>\n      <th>eve_CODE<\/th>\n      <th>eve_LIBELLE<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"pageLength":2,"columnDefs":[{"className":"dt-right","targets":[26,27,28]},{"name":"Code_station_SANDRE","targets":0},{"name":"SME_LB_STATION_MESURE_EAUX_SURFACE","targets":1},{"name":"SME_NOM_ENTITE_HYDROGRAPHIQUE","targets":2},{"name":"SME_CD_DEPARTEMENT","targets":3},{"name":"SME_COORD_X_STATION_MESURE_EAUX_SURFACE","targets":4},{"name":"SME_COORD_Y_STATION_MESURE_EAUX_SURFACE","targets":5},{"name":"Libelle_bassin","targets":6},{"name":"Libelle_departement","targets":7},{"name":"Region","targets":8},{"name":"reseau","targets":9},{"name":"TPR_LIBELLE","targets":10},{"name":"OPE_ID","targets":11},{"name":"OPE_CODE","targets":12},{"name":"OPE_VERSION_PROTOCOLE","targets":13},{"name":"OPE_VERSION_PROTOCOLE_LIBELLE","targets":14},{"name":"OPE_DATE_REALISATION","targets":15},{"name":"OPE_DATE_PREVUE","targets":16},{"name":"CRI_CODE_G","targets":17},{"name":"CRI_CODE_D","targets":18},{"name":"code_pt_prelevement","targets":19},{"name":"num_operation","targets":20},{"name":"CRI_LIBELLE_D","targets":21},{"name":"CRI_LIBELLE_G","targets":22},{"name":"TRA_ID","targets":23},{"name":"TRA_CODE","targets":24},{"name":"TRA_NUM","targets":25},{"name":"TRA_LPB","targets":26},{"name":"TRA_L_MOUILLEE","targets":27},{"name":"TRA_HPB","targets":28},{"name":"RDT_CODE","targets":29},{"name":"TRA_REMARQUES","targets":30},{"name":"TRA_OPE_ID","targets":31},{"name":"FSI_CODE","targets":32},{"name":"FAF_CODE","targets":33},{"name":"FSI_LIBELLE","targets":34},{"name":"BER_ID","targets":35},{"name":"BER_RIVE","targets":36},{"name":"SDO_CODE","targets":37},{"name":"ERI_CODE","targets":38},{"name":"STR_ID","targets":39},{"name":"STR_TST_ID","targets":40},{"name":"STR_EVE_ID","targets":41},{"name":"TST_LIBELLE","targets":42},{"name":"SDO_LIBELLE","targets":43},{"name":"eve_CODE","targets":44},{"name":"eve_LIBELLE","targets":45}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[2,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-72587daa025d2c9f5980" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-72587daa025d2c9f5980">{"x":{"filter":"none","vertical":false,"data":[["03233980","03233980","03233980","03233980","03233980"],["L'URE A SILLY-EN-GOUFFERN 2","L'URE A SILLY-EN-GOUFFERN 2","L'URE A SILLY-EN-GOUFFERN 2","L'URE A SILLY-EN-GOUFFERN 2","L'URE A SILLY-EN-GOUFFERN 2"],["L'Ure","L'Ure","L'Ure","L'Ure","L'Ure"],["61","61","61","61","61"],["486872.0","486872.0","486872.0","486872.0","486872.0"],["6854308.0","6854308.0","6854308.0","6854308.0","6854308.0"],["Seine-Normandie","Seine-Normandie","Seine-Normandie","Seine-Normandie","Seine-Normandie"],["Orne","Orne","Orne","Orne","Orne"],["Normandie","Normandie","Normandie","Normandie","Normandie"],["RCS","RCS","RCS","RCS","RCS"],["RGF93 / Lambert 93","RGF93 / Lambert 93","RGF93 / Lambert 93","RGF93 / Lambert 93","RGF93 / Lambert 93"],["655","2272","2272","2272","2272"],["03233980016001","03233980016003","03233980016003","03233980016003","03233980016003"],["2","2","2","2","2"],["2009-2016","2009-2016","2009-2016","2009-2016","2009-2016"],["","19/07/2016","19/07/2016","19/07/2016","19/07/2016"],["10/07/2010","10/01/2016","10/01/2016","10/01/2016","10/01/2016"],["","4","4","4","4"],["","5","5","5","5"],["016","016","016","016","016"],["001","003","003","003","003"],[null,"continue","continue","continue","continue"],[null,"semi-continue","semi-continue","semi-continue","semi-continue"],[null,"34136","34136","34140","34140"],[null,"03233980016003_34136","03233980016003_34136","03233980016003_34140","03233980016003_34140"],[null,"1","1","3","3"],[null,7.2,7.2,6.6,6.6],[null,4.94,4.94,3.1,3.1],[null,1.35,1.35,1.4,1.4],[null,"2","2","2","2"],[null,"Pour tous les transects Ic égal 1 sauf précision","Pour tous les transects Ic égal 1 sauf précision","Prof mouilles P1/65cm P2/50cm P3/65cm P4/56cm","Prof mouilles P1/65cm P2/50cm P3/65cm P4/56cm"],[null,"2272","2272","2272","2272"],[null,"2","2","2","2"],[null,"6","6","6","6"],[null,"Plat lentique","Plat lentique","Plat lentique","Plat lentique"],[null,"68271","68272","68279","68280"],[null,"G","D","G","D"],[null,"true","true","true","true"],[null,"true","false","true","false"],[null,"true","true","true","true"],[null,"1","1","1","1"],[null,"1","1","NR","NR"],[null,null,null,null,null],[null,null,null,null,null],[null,null,null,null,null],[null,null,null,null,null],[null,"Arborescente","Arborescente","Arborescente","Arborescente"],[null,null,null,null,null],[null,null,null,null,null]],"container":"<table class=\"display compact\">\n  <thead>\n    <tr>\n      <th>Code_station_SANDRE<\/th>\n      <th>SME_LB_STATION_MESURE_EAUX_SURFACE<\/th>\n      <th>SME_NOM_ENTITE_HYDROGRAPHIQUE<\/th>\n      <th>SME_CD_DEPARTEMENT<\/th>\n      <th>SME_COORD_X_STATION_MESURE_EAUX_SURFACE<\/th>\n      <th>SME_COORD_Y_STATION_MESURE_EAUX_SURFACE<\/th>\n      <th>Libelle_bassin<\/th>\n      <th>Libelle_departement<\/th>\n      <th>Region<\/th>\n      <th>reseau<\/th>\n      <th>TPR_LIBELLE<\/th>\n      <th>OPE_ID<\/th>\n      <th>OPE_CODE<\/th>\n      <th>OPE_VERSION_PROTOCOLE<\/th>\n      <th>OPE_VERSION_PROTOCOLE_LIBELLE<\/th>\n      <th>OPE_DATE_REALISATION<\/th>\n      <th>OPE_DATE_PREVUE<\/th>\n      <th>CRI_CODE_G<\/th>\n      <th>CRI_CODE_D<\/th>\n      <th>code_pt_prelevement<\/th>\n      <th>num_operation<\/th>\n      <th>CRI_LIBELLE_D<\/th>\n      <th>CRI_LIBELLE_G<\/th>\n      <th>TRA_ID<\/th>\n      <th>TRA_CODE<\/th>\n      <th>TRA_NUM<\/th>\n      <th>TRA_LPB<\/th>\n      <th>TRA_L_MOUILLEE<\/th>\n      <th>TRA_HPB<\/th>\n      <th>RDT_CODE<\/th>\n      <th>TRA_REMARQUES<\/th>\n      <th>TRA_OPE_ID<\/th>\n      <th>FSI_CODE<\/th>\n      <th>FAF_CODE<\/th>\n      <th>FSI_LIBELLE<\/th>\n      <th>BER_ID<\/th>\n      <th>BER_RIVE<\/th>\n      <th>BER_PRES_ABSENCE_STRATE_ARBOREE<\/th>\n      <th>BER_PRES_ABSENCE_STRATE_ARBUSTIVE<\/th>\n      <th>BER_PRES_ABSENCE_STRATE_HERBACEE<\/th>\n      <th>SDO_CODE<\/th>\n      <th>ERI_CODE<\/th>\n      <th>STR_ID<\/th>\n      <th>STR_TST_ID<\/th>\n      <th>STR_EVE_ID<\/th>\n      <th>TST_LIBELLE<\/th>\n      <th>SDO_LIBELLE<\/th>\n      <th>eve_CODE<\/th>\n      <th>eve_LIBELLE<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"pageLength":2,"columnDefs":[{"className":"dt-right","targets":[26,27,28]},{"name":"Code_station_SANDRE","targets":0},{"name":"SME_LB_STATION_MESURE_EAUX_SURFACE","targets":1},{"name":"SME_NOM_ENTITE_HYDROGRAPHIQUE","targets":2},{"name":"SME_CD_DEPARTEMENT","targets":3},{"name":"SME_COORD_X_STATION_MESURE_EAUX_SURFACE","targets":4},{"name":"SME_COORD_Y_STATION_MESURE_EAUX_SURFACE","targets":5},{"name":"Libelle_bassin","targets":6},{"name":"Libelle_departement","targets":7},{"name":"Region","targets":8},{"name":"reseau","targets":9},{"name":"TPR_LIBELLE","targets":10},{"name":"OPE_ID","targets":11},{"name":"OPE_CODE","targets":12},{"name":"OPE_VERSION_PROTOCOLE","targets":13},{"name":"OPE_VERSION_PROTOCOLE_LIBELLE","targets":14},{"name":"OPE_DATE_REALISATION","targets":15},{"name":"OPE_DATE_PREVUE","targets":16},{"name":"CRI_CODE_G","targets":17},{"name":"CRI_CODE_D","targets":18},{"name":"code_pt_prelevement","targets":19},{"name":"num_operation","targets":20},{"name":"CRI_LIBELLE_D","targets":21},{"name":"CRI_LIBELLE_G","targets":22},{"name":"TRA_ID","targets":23},{"name":"TRA_CODE","targets":24},{"name":"TRA_NUM","targets":25},{"name":"TRA_LPB","targets":26},{"name":"TRA_L_MOUILLEE","targets":27},{"name":"TRA_HPB","targets":28},{"name":"RDT_CODE","targets":29},{"name":"TRA_REMARQUES","targets":30},{"name":"TRA_OPE_ID","targets":31},{"name":"FSI_CODE","targets":32},{"name":"FAF_CODE","targets":33},{"name":"FSI_LIBELLE","targets":34},{"name":"BER_ID","targets":35},{"name":"BER_RIVE","targets":36},{"name":"BER_PRES_ABSENCE_STRATE_ARBOREE","targets":37},{"name":"BER_PRES_ABSENCE_STRATE_ARBUSTIVE","targets":38},{"name":"BER_PRES_ABSENCE_STRATE_HERBACEE","targets":39},{"name":"SDO_CODE","targets":40},{"name":"ERI_CODE","targets":41},{"name":"STR_ID","targets":42},{"name":"STR_TST_ID","targets":43},{"name":"STR_EVE_ID","targets":44},{"name":"TST_LIBELLE","targets":45},{"name":"SDO_LIBELLE","targets":46},{"name":"eve_CODE","targets":47},{"name":"eve_LIBELLE","targets":48}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[2,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
 <p><strong>Table_granulo:</strong></p>
-<div class="datatables html-widget html-fill-item" id="htmlwidget-62facb12517bbc58d282" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-62facb12517bbc58d282">{"x":{"filter":"none","vertical":false,"data":[["03233980","03233980","03233980","03233980","03233980"],["L'URE A SILLY-EN-GOUFFERN 2","L'URE A SILLY-EN-GOUFFERN 2","L'URE A SILLY-EN-GOUFFERN 2","L'URE A SILLY-EN-GOUFFERN 2","L'URE A SILLY-EN-GOUFFERN 2"],["L'Ure","L'Ure","L'Ure","L'Ure","L'Ure"],["61","61","61","61","61"],["486872.0","486872.0","486872.0","486872.0","486872.0"],["6854308.0","6854308.0","6854308.0","6854308.0","6854308.0"],["Seine-Normandie","Seine-Normandie","Seine-Normandie","Seine-Normandie","Seine-Normandie"],["Orne","Orne","Orne","Orne","Orne"],["Normandie","Normandie","Normandie","Normandie","Normandie"],["RCS","RCS","RCS","RCS","RCS"],["RGF93 / Lambert 93","RGF93 / Lambert 93","RGF93 / Lambert 93","RGF93 / Lambert 93","RGF93 / Lambert 93"],["655","655","655","655","655"],["03233980016001","03233980016001","03233980016001","03233980016001","03233980016001"],["2","2","2","2","2"],["2009-2016","2009-2016","2009-2016","2009-2016","2009-2016"],["","","","",""],["10/07/2010","10/07/2010","10/07/2010","10/07/2010","10/07/2010"],["2","2","2","2","2"],["1","1","1","1","1"],["0","0","0","0","0"],["79771","79771","79771","79771","79771"],["","","","",""],["","","","",""],["016","016","016","016","016"],["001","001","001","001","001"],["Non définissable","Non définissable","Non définissable","Non définissable","Non définissable"],["Qualifiée non validée","Qualifiée non validée","Qualifiée non validée","Qualifiée non validée","Qualifiée non validée"],["64730","64727","64728","64729","64731"],["null","null","null","null","null"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Code_station_SANDRE<\/th>\n      <th>SME_LB_STATION_MESURE_EAUX_SURFACE<\/th>\n      <th>SME_NOM_ENTITE_HYDROGRAPHIQUE<\/th>\n      <th>SME_CD_DEPARTEMENT<\/th>\n      <th>SME_COORD_X_STATION_MESURE_EAUX_SURFACE<\/th>\n      <th>SME_COORD_Y_STATION_MESURE_EAUX_SURFACE<\/th>\n      <th>Libelle_bassin<\/th>\n      <th>Libelle_departement<\/th>\n      <th>Region<\/th>\n      <th>reseau<\/th>\n      <th>TPR_LIBELLE<\/th>\n      <th>OPE_ID<\/th>\n      <th>OPE_CODE<\/th>\n      <th>OPE_VERSION_PROTOCOLE<\/th>\n      <th>OPE_VERSION_PROTOCOLE_LIBELLE<\/th>\n      <th>OPE_DATE_REALISATION<\/th>\n      <th>OPE_DATE_PREVUE<\/th>\n      <th>PRO_CODE<\/th>\n      <th>VAL_CODE<\/th>\n      <th>QUA_CODE<\/th>\n      <th>PPR_ID<\/th>\n      <th>RME_CODE_SANDRE<\/th>\n      <th>RME_NOM<\/th>\n      <th>code_pt_prelevement<\/th>\n      <th>num_operation<\/th>\n      <th>QUA_LIBELLE<\/th>\n      <th>VAL_LIBELLE<\/th>\n      <th>MGR_ID<\/th>\n      <th>MGR_MESURES<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"pageLength":2,"columnDefs":[{"name":"Code_station_SANDRE","targets":0},{"name":"SME_LB_STATION_MESURE_EAUX_SURFACE","targets":1},{"name":"SME_NOM_ENTITE_HYDROGRAPHIQUE","targets":2},{"name":"SME_CD_DEPARTEMENT","targets":3},{"name":"SME_COORD_X_STATION_MESURE_EAUX_SURFACE","targets":4},{"name":"SME_COORD_Y_STATION_MESURE_EAUX_SURFACE","targets":5},{"name":"Libelle_bassin","targets":6},{"name":"Libelle_departement","targets":7},{"name":"Region","targets":8},{"name":"reseau","targets":9},{"name":"TPR_LIBELLE","targets":10},{"name":"OPE_ID","targets":11},{"name":"OPE_CODE","targets":12},{"name":"OPE_VERSION_PROTOCOLE","targets":13},{"name":"OPE_VERSION_PROTOCOLE_LIBELLE","targets":14},{"name":"OPE_DATE_REALISATION","targets":15},{"name":"OPE_DATE_PREVUE","targets":16},{"name":"PRO_CODE","targets":17},{"name":"VAL_CODE","targets":18},{"name":"QUA_CODE","targets":19},{"name":"PPR_ID","targets":20},{"name":"RME_CODE_SANDRE","targets":21},{"name":"RME_NOM","targets":22},{"name":"code_pt_prelevement","targets":23},{"name":"num_operation","targets":24},{"name":"QUA_LIBELLE","targets":25},{"name":"VAL_LIBELLE","targets":26},{"name":"MGR_ID","targets":27},{"name":"MGR_MESURES","targets":28}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[2,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-4138626ba39834ec61a7" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-4138626ba39834ec61a7">{"x":{"filter":"none","vertical":false,"data":[["03233980","03233980","03233980","03233980","03233980"],["L'URE A SILLY-EN-GOUFFERN 2","L'URE A SILLY-EN-GOUFFERN 2","L'URE A SILLY-EN-GOUFFERN 2","L'URE A SILLY-EN-GOUFFERN 2","L'URE A SILLY-EN-GOUFFERN 2"],["L'Ure","L'Ure","L'Ure","L'Ure","L'Ure"],["61","61","61","61","61"],["486872.0","486872.0","486872.0","486872.0","486872.0"],["6854308.0","6854308.0","6854308.0","6854308.0","6854308.0"],["Seine-Normandie","Seine-Normandie","Seine-Normandie","Seine-Normandie","Seine-Normandie"],["Orne","Orne","Orne","Orne","Orne"],["Normandie","Normandie","Normandie","Normandie","Normandie"],["RCS","RCS","RCS","RCS","RCS"],["RGF93 / Lambert 93","RGF93 / Lambert 93","RGF93 / Lambert 93","RGF93 / Lambert 93","RGF93 / Lambert 93"],["655","655","655","655","655"],["03233980016001","03233980016001","03233980016001","03233980016001","03233980016001"],["2","2","2","2","2"],["2009-2016","2009-2016","2009-2016","2009-2016","2009-2016"],["","","","",""],["10/07/2010","10/07/2010","10/07/2010","10/07/2010","10/07/2010"],["2","2","2","2","2"],["1","1","1","1","1"],["0","0","0","0","0"],["79771","79771","79771","79771","79771"],["","","","",""],["","","","",""],["016","016","016","016","016"],["001","001","001","001","001"],["Non définissable","Non définissable","Non définissable","Non définissable","Non définissable"],["Qualifiée non validée","Qualifiée non validée","Qualifiée non validée","Qualifiée non validée","Qualifiée non validée"],["64730","64727","64728","64729","64731"],["null","null","null","null","null"]],"container":"<table class=\"display compact\">\n  <thead>\n    <tr>\n      <th>Code_station_SANDRE<\/th>\n      <th>SME_LB_STATION_MESURE_EAUX_SURFACE<\/th>\n      <th>SME_NOM_ENTITE_HYDROGRAPHIQUE<\/th>\n      <th>SME_CD_DEPARTEMENT<\/th>\n      <th>SME_COORD_X_STATION_MESURE_EAUX_SURFACE<\/th>\n      <th>SME_COORD_Y_STATION_MESURE_EAUX_SURFACE<\/th>\n      <th>Libelle_bassin<\/th>\n      <th>Libelle_departement<\/th>\n      <th>Region<\/th>\n      <th>reseau<\/th>\n      <th>TPR_LIBELLE<\/th>\n      <th>OPE_ID<\/th>\n      <th>OPE_CODE<\/th>\n      <th>OPE_VERSION_PROTOCOLE<\/th>\n      <th>OPE_VERSION_PROTOCOLE_LIBELLE<\/th>\n      <th>OPE_DATE_REALISATION<\/th>\n      <th>OPE_DATE_PREVUE<\/th>\n      <th>PRO_CODE<\/th>\n      <th>VAL_CODE<\/th>\n      <th>QUA_CODE<\/th>\n      <th>PPR_ID<\/th>\n      <th>RME_CODE_SANDRE<\/th>\n      <th>RME_NOM<\/th>\n      <th>code_pt_prelevement<\/th>\n      <th>num_operation<\/th>\n      <th>QUA_LIBELLE<\/th>\n      <th>VAL_LIBELLE<\/th>\n      <th>MGR_ID<\/th>\n      <th>MGR_MESURES<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"pageLength":2,"columnDefs":[{"name":"Code_station_SANDRE","targets":0},{"name":"SME_LB_STATION_MESURE_EAUX_SURFACE","targets":1},{"name":"SME_NOM_ENTITE_HYDROGRAPHIQUE","targets":2},{"name":"SME_CD_DEPARTEMENT","targets":3},{"name":"SME_COORD_X_STATION_MESURE_EAUX_SURFACE","targets":4},{"name":"SME_COORD_Y_STATION_MESURE_EAUX_SURFACE","targets":5},{"name":"Libelle_bassin","targets":6},{"name":"Libelle_departement","targets":7},{"name":"Region","targets":8},{"name":"reseau","targets":9},{"name":"TPR_LIBELLE","targets":10},{"name":"OPE_ID","targets":11},{"name":"OPE_CODE","targets":12},{"name":"OPE_VERSION_PROTOCOLE","targets":13},{"name":"OPE_VERSION_PROTOCOLE_LIBELLE","targets":14},{"name":"OPE_DATE_REALISATION","targets":15},{"name":"OPE_DATE_PREVUE","targets":16},{"name":"PRO_CODE","targets":17},{"name":"VAL_CODE","targets":18},{"name":"QUA_CODE","targets":19},{"name":"PPR_ID","targets":20},{"name":"RME_CODE_SANDRE","targets":21},{"name":"RME_NOM","targets":22},{"name":"code_pt_prelevement","targets":23},{"name":"num_operation","targets":24},{"name":"QUA_LIBELLE","targets":25},{"name":"VAL_LIBELLE","targets":26},{"name":"MGR_ID","targets":27},{"name":"MGR_MESURES","targets":28}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[2,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </div>

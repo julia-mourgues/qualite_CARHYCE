@@ -17,20 +17,6 @@ Cette table nous permettra ensuite de générer des fiches par station qui à pa
 
 # 1. Procédure de téléchargement des données
 
-## A. Préparer l'environnement de travail
-
-L'ensemble du travail réalisé est fait sur Rstudio.   
-Pour commencer, il faut créer un dossier en local qui va accueillir notre projet .R nommé **"qualite_CARHYCE"**.  
-Dans ce dossier, créer les dossiers suivants:<br>
-- Data <br>
-- R <br>
-- Script <br>
-- fiches_qualite_stations <br>
-
-Dans le dossier **"Data"**, créer les sous-dossiers **"export_03"**, **"export_04"** et **"clean_data"**.  
-
-## B. Téléchargement des données
-
 Se connecter à la base de données CARHYCE à l'adresse https://carhyce.eaufrance.fr/login.htm <br>
 Cliquer sur **"Accéder aux données"** dans la rubrique "Ressources et téléchargements".  
 
@@ -148,7 +134,8 @@ DT::datatable(
     scrollX = TRUE,
     pageLength = 5
   ),
-  rownames = FALSE
+  rownames = FALSE,
+  class = "display compact"
 )
 ```
 
@@ -211,7 +198,8 @@ DT::datatable(
     scrollX = TRUE,
     pageLength = 5
   ),
-  rownames = FALSE
+  rownames = FALSE,
+  class = "display compact"
 )
 ```
 
@@ -404,6 +392,9 @@ Table_transect_facies_berge <- Table_stations_etude %>%
                   select(BER_ID,
                          BER_TRA_ID,
                          BER_RIVE,
+                         BER_PRES_ABSENCE_STRATE_ARBOREE,
+                         BER_PRES_ABSENCE_STRATE_ARBUSTIVE,
+                         BER_PRES_ABSENCE_STRATE_HERBACEE,
                          SDO_CODE,
                          ERI_CODE),
                 by=c("TRA_ID"="BER_TRA_ID")) %>% 
@@ -495,7 +486,8 @@ DT::datatable(
     scrollX = TRUE,
     pageLength = 2
   ),
-  rownames = FALSE
+  rownames = FALSE,
+  class = "display compact"
 )
 ```
 
@@ -507,7 +499,8 @@ DT::datatable(
     scrollX = TRUE,
     pageLength = 2
   ),
-  rownames = FALSE
+  rownames = FALSE,
+  class = "display compact"
 )
 ```
 
@@ -519,6 +512,7 @@ DT::datatable(
     scrollX = TRUE,
     pageLength = 2
   ),
-  rownames = FALSE
+  rownames = FALSE,
+  class = "display compact"
 )
 ```

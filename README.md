@@ -42,7 +42,7 @@ Pour générer les fiches de mise en qualité, il faut se rendre dans le dossier
 
 Ce script fonctionne à partir des tables créées dans la partie précédente.  
 
-⚠ Penser à modifier le début du script ù sont définis les objets contenant la région, les auteurs et la structure. 
+⚠ Penser à modifier le début du script où sont définis les objets contenant la région, les auteurs et la structure. 
 
 ⚠ Penser à adapter le chemin d'accès du dossier dans lequel seront générées les fiches.
 

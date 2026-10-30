@@ -9,27 +9,15 @@ données brutes téléchargées sur la base de données CARHYCE (https://carhyce
 Ces fiches permettent de mettre en évidence les éventuelles erreurs de 
 saisie, données aberrantes et points de vigilance.
 
-Plusieurs packages sont utilisés pour ce projet, et sont réinstallés à l'aide du R package `renv`.
+Pour l'utiliser, il faut cloner le dépot GitHub sur votre ordinateur et ouvrir le ficher .Rproj.
+Ensuite, il faut installer l'ensemble des packages utilisés pour le projet en utilisant la fonction suivante du package `renv`.
 
 ```r
-# Au besoin, pour restaurer l'installation des packages
+# Pour restaurer l'installation des packages
 renv::restore()
 ```
 
-
-## 1. Effectuer les vérifications de niveau A indiquées par le national
-
-Pour cette partie il faut suivre le script **1_Verification_national.Rmd**. 
-Cette partie est indépendante du reste de la procédure de mise en qualité et 
-permet de vérifier les erreurs mises en évidence par le traitement des données 
-effectué au niveau national.
-
-Le jeu de données utilisé ici est disponible sur le réseau, il est important de 
-vérifier le chemin d'accès du fichier. 
-Le script permet de filtrer le tableau afin de garder seulement les stations de 
-Normandie.
-
-## 2. Créer les tables de travail
+## 1. Créer les tables de travail
 La procédure d'export et de stockage des données CARHYCE est présentée en première 
 partie du script **2_Preparation_donnees.html**.
 
@@ -48,11 +36,13 @@ des stations suivies dans la région.
 Une fois créées, ces tables sont enregistrées dans 
 le dossier **Data/clean_data/** .
 
-## 3. Générer les fiches de mise en qualité
+## 2. Générer les fiches de mise en qualité
 Pour générer les fiches de mise en qualité, il faut se rendre dans le dossier 
 **fiches_qualite_stations** et faire tourner le script **script_generer_fiches.R**.
 
 Ce script fonctionne à partir des tables créées dans la partie précédente.  
+
+⚠ Penser à modifier le début du script ù sont définis les objets contenant la région, les auteurs et la structure. 
 
 ⚠ Penser à adapter le chemin d'accès du dossier dans lequel seront générées les fiches.
 

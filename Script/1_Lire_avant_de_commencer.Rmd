@@ -1,0 +1,54 @@
+---
+title: "Préparation de l'environnement de travail"
+author: "DR Normandie - Service Régional Connaissance"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+  html_document:
+    highlight: pygments
+    theme: default
+    toc: FALSE
+    css: css/ofb_theme_html.css
+---
+
+Avant de commencer le processus de mise en qualité des données CARHYCE, il faut préparer l'environnement de travail.
+
+L'ensemble du travail réalisé est fait sur Rstudio. 
+Afin de faciliter l'organisation et retrouver facilement les données et fonctions utilisées, nous allons travailler dans un Projet R.
+
+Pour commencer, il faut cloner le dépot GitHub sur votre ordinateur et ouvrir le ficher .Rproj.
+Ensuite, il faut installer l'ensemble des packages utilisés pour le projet en utilisant la fonction suivante du package `renv`.
+
+```r
+# Pour restaurer l'installation des packages
+renv::restore()
+```
+
+# Organisation des dossiers
+
+Le projet est organisé de la manière suivante:
+
+4 sous-dossiers principaux:<br>
+- **Data** : contient les données utilisées;<br>
+- **R** : contient l'ensemble des fonctions;<br>
+- **Script** : contient les 2 scripts de préparation des données;<br> 
+- **fiches_qualite_stations** : contient le script permettant de générer les fiches ainsi que le template. <br>
+
+Le dossier **Data** contient 3 sous-dossiers:<br>
+- **export_03**: contient les données brutes du bassin Seine-Normandie;  <br>
+- **export_04**: contient les données brutes du bassin Loire-Bretagne;<br>
+- **clean_data**: accueillera les tables crées au cours du traitement des données. <br> 
+
+
+# Identifier les données nécessaires
+
+Ensuite, assurez-vous de disposer de l’ensemble des tables et données nécessaires à l’exécution du script 2_Preparation_donnees.<br>
+
+Nous avons besoin d'un fichier contenant au moins les **codes sandre des stations suivies**, et si possible les réseaux auxquels elles appartiennent. Les codes station doivent être au format "character".<br>
+
+Enfin, nous aurons besoin des données brutes CARHYCE téléchargées depuis le Web CARHYCE (https://carhyce.eaufrance.fr/login.htm), la procédure de téléchargement est décrite dans le script **2_Preparation_donnees** .
+
+
+> **IMPORTANT** <br>
+> Le script de traitement des données et le template des fiches station sont adaptés pour la région Normandie. <br>
+> Prenez le temps de parcourir les scripts 2_Preparation_donnees et script_generer_fiches.R pour tout adapter à votre région.
+>

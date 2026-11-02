@@ -250,6 +250,12 @@ graph_prof_point(data=table_transects)
 
 ## E. Strates identifiées et strate dominante
 
+Ce tableau présente les données relatives aux strates identifiées sur les berges pour chaque transect.  
+Une croix rouge dans la colonne "Strate dominante" indique que rien n'a été renseigné, il faut donc indiquer **strate dominante =  "AUCUNE"** dans la base de donnée CARHYCE.  
+
+Seules les strates "Arborée" et "Arbustive" peuvent être considérées comme dominantes, si le terme "Herbacée" apparaît dans la colonne **Strate dominante** alors il est coloré en rouge et il faudra le corriger dans la base. 
+
+
 ```{r table_dispo_SDO}
 dispo_SDO(data=Table_transect_facies_berge,
           id_station=params$code_station)

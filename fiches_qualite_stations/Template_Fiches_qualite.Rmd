@@ -42,10 +42,6 @@ library(ggpattern)
 library(ggspatial)
 library(ggbreak)
 ```
-```{r}
-# lecture des données
-base::load(here::here("Data/clean_data", "CARHYCE_data.rda"))
-```
 
 ```{r chargement_fonctions}
 fichiers_R <- list.files(

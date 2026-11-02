@@ -75,6 +75,15 @@ dispo_SDO <- function(data,
     ) %>%
     gt::tab_style(
       style = cell_text(
+        color = "black",
+        weight = "bold"
+      ),
+      locations = cells_body(
+        columns = SDO_LIBELLE,
+        rows = SDO_LIBELLE == "Aucune"
+      )) %>% 
+    gt::tab_style(
+      style = cell_text(
         color = "#44a611",
         weight = "bold"
       ),

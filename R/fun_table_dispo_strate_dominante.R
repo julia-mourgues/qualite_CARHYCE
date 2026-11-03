@@ -6,6 +6,7 @@ dispo_SDO <- function(data,
     dplyr::select(
       OPE_ID,
       OPE_DATE_REALISATION,
+      OPE_VERSION_PROTOCOLE_LIBELLE,
       TRA_NUM,
       BER_RIVE,
       BER_PRES_ABSENCE_STRATE_ARBOREE,
@@ -46,10 +47,12 @@ dispo_SDO <- function(data,
       groupe = paste(
         format(OPE_DATE_REALISATION, "%d/%m/%Y"),
         "- Opération ",
-        OPE_ID
+        OPE_ID,
+        "- Protocole ",
+        OPE_VERSION_PROTOCOLE_LIBELLE
       )
     ) %>% 
-    dplyr::select(-OPE_DATE_REALISATION, -OPE_ID) %>% 
+    dplyr::select(-OPE_DATE_REALISATION, -OPE_ID, -OPE_VERSION_PROTOCOLE_LIBELLE) %>% 
     
     #Mise en forme avec gt()
     gt::gt(

@@ -92,14 +92,14 @@ graph_prof_point<- function(data){
     ggplot2::scale_shape_manual(
       values = c(
         "Profondeur 0" = 21,
-        "Profondeur = HPB"=24,
+        "Profondeur = -HPB"=24,
         "OK" = 21
       )
     )+
     ggplot2::scale_fill_manual(
       values = c(
         "Profondeur 0" = "red",
-        "Profondeur = HPB"="orange",
+        "Profondeur = -HPB"="orange",
         "OK" = "steelblue"
       )
     )+

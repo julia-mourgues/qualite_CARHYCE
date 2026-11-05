@@ -23,7 +23,7 @@ dispo_SDO <- function(data,
       TRA_NUM= base::as.numeric(TRA_NUM),
       OPE_ID= base::as.numeric(OPE_ID),
       SDO_LIBELLE = if_else(
-        is.na(SDO_LIBELLE) | SDO_LIBELLE=="Non Renseigné" | SDO_LIBELLE=="Pas d'info" ,
+        is.na(SDO_LIBELLE) | SDO_LIBELLE=="Non Renseigné" ,
         "❌",
         as.character(SDO_LIBELLE)
       ),
@@ -85,6 +85,15 @@ dispo_SDO <- function(data,
         columns = SDO_LIBELLE,
         rows = SDO_LIBELLE == "Aucune"
       )) %>% 
+    gt::tab_style(
+      style = cell_text(
+        color = "orange",
+        weight = "bold"
+      ),
+      locations = cells_body(
+        columns = SDO_LIBELLE,
+        rows = SDO_LIBELLE == "Pas d'info"
+      )) %>%
     gt::tab_style(
       style = cell_text(
         color = "red",

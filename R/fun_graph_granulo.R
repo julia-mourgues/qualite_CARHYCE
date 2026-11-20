@@ -4,6 +4,7 @@
 graph_granulo <- function(data){
   
   data <- data %>%
+    arrange(OPE_DATE_REALISATION) %>% 
     mutate(
       label_ope = factor(
         label_ope,

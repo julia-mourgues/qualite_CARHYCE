@@ -10,7 +10,7 @@ graph_LPB_LM_tra <- function(data){
     dplyr:: distinct() %>% 
     dplyr::mutate(
       TRA_NUM= base::as.numeric(TRA_NUM)) %>% 
-    dplyr::arrange(OPE_ID_NUM, TRA_NUM) %>% 
+    dplyr::arrange(OPE_DATE_REALISATION, TRA_NUM) %>% 
     dplyr::mutate(
       label = base::factor(
         label,

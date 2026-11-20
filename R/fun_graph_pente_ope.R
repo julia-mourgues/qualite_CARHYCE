@@ -8,13 +8,18 @@ graph_pente_ope<- function(data) {
   #objet contenant la hauteur de l'axe y
   max_y <- max(data$OPE_PENTE_LIGNE_EAU, na.rm = TRUE)+2
   
+  data <- data %>% 
+    arrange(OPE_DATE_REALISATION) %>% 
+    mutate(OPE_DATE_REALISATION= factor(OPE_DATE_REALISATION,
+                                        levels = base::unique(OPE_DATE_REALISATION)))
+  
   #---Graphique
   p <- ggplot2::ggplot(data ) +
     
     #points interactifs correspondants aux valeurs de pente
     ggiraph::geom_point_interactive(
       ggplot2::aes(
-        x = OPE_ID,
+        x = OPE_DATE_REALISATION,
         y = OPE_PENTE_LIGNE_EAU,
         tooltip = base::paste0(
           "ope_id: ",
@@ -43,7 +48,7 @@ graph_pente_ope<- function(data) {
     ggplot2::theme_bw() +
     ggplot2::labs(
        title = "Comparaison des pentes de ligne d'eau mesurées entre <br> opérations ", 
-       x="Numéro d'opération",
+       x="Date opération",
        y = "Pente (‰)")+
     ggplot2::theme(
       axis.title = ggplot2::element_text(size=16, face="bold"),

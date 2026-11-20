@@ -11,7 +11,7 @@ graph_prof_point<- function(data){
       TRA_HPB_cm = (TRA_HPB) *100,
       TRA_HPB_cm_inv = (-TRA_HPB_cm),
       TRA_HPB_cm_inv = ifelse(TRA_HPB_cm_inv == -99900, NA, TRA_HPB_cm_inv)) %>% 
-    dplyr::arrange(OPE_ID_NUM, TRA_NUM) %>% 
+    dplyr::arrange(OPE_DATE_REALISATION, TRA_NUM) %>% 
     dplyr::mutate(
       label = base::factor(
         label,

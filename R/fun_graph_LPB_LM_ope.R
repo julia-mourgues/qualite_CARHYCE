@@ -45,13 +45,18 @@ graph_LPB_LM_ope <- function (data){
     )
   }
   
+  data <- data %>% 
+    arrange(OPE_DATE_REALISATION) %>% 
+    mutate(OPE_DATE_REALISATION= factor(OPE_DATE_REALISATION,
+                                        levels = base::unique(OPE_DATE_REALISATION)))
+  
   #---Graphique
   p <- ggplot2::ggplot(data) +
     
     #points interactifs correspondants aux largeurs plein bord
     ggiraph::geom_point_interactive(
       ggplot2::aes(
-        x = OPE_ID,
+        x = OPE_DATE_REALISATION,
         y = OPE_LPBEV,
         fill = "Largeur Plein Bord",
         tooltip = base::paste0(
@@ -68,7 +73,7 @@ graph_LPB_LM_ope <- function (data){
     # Points interactifs correspondants aux largeurs mouillées
     ggiraph::geom_point_interactive(
       ggplot2::aes(
-        x = OPE_ID,
+        x = OPE_DATE_REALISATION,
         y = OPE_LMEV,
         fill = "Largeur Mouillée",
         tooltip = base::paste0(
@@ -96,7 +101,7 @@ graph_LPB_LM_ope <- function (data){
     ggplot2::theme_bw() +
     ggplot2::labs(
       title = "Comparaison des largeurs plein bord et largeurs mouillées par opération",
-      x = "Numéro d'opération",
+      x = "Date opération",
       y = "Largeur (m)",
       fill = "Type de largeur"
     ) +

@@ -9,13 +9,18 @@ graph_DIP_ope <- function(data) {
   limit_sup_y <- base::max(data$OPE_DIP, na.rm = TRUE) +0.2
   limit_inf_y <- base::min(data$OPE_DIP, na.rm = TRUE) -0.2
   
+  data <- data %>% 
+    arrange(OPE_DATE_REALISATION) %>% 
+    mutate(OPE_DATE_REALISATION= factor(OPE_DATE_REALISATION,
+                                        levels = base::unique(OPE_DATE_REALISATION)))
+  
   #--- Graphique
   p <- ggplot2::ggplot(data) +
     
     #Points interactifs correspondant aux valeurs de DIP
     ggiraph::geom_point_interactive(
       ggplot2::aes(
-        x = OPE_ID,
+        x = OPE_DATE_REALISATION,
         y = OPE_DIP,
         tooltip = base::paste0(
           "ope_id: ",
@@ -44,7 +49,7 @@ graph_DIP_ope <- function(data) {
     ggplot2::theme_bw() +
     ggplot2::labs(
        title = "Comparaison des distances inter-points entre opérations ", 
-       x="Numéro d'opération",
+       x="Date opération",
        y = "Distance inter-point (m)")+
     ggplot2::theme(axis.title = ggplot2::element_text(size=16, face="bold"),
           axis.text= ggplot2::element_text(size=14),

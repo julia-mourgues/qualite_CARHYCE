@@ -9,13 +9,18 @@ graph_LR_ope <- function(data) {
   #objet contenant la hauteur de l'axe y
   max_y <- base::max(data$OPE_LR, na.rm = TRUE)+20
   
+  data <- data %>% 
+    arrange(OPE_DATE_REALISATION) %>% 
+    mutate(OPE_DATE_REALISATION= factor(OPE_DATE_REALISATION,
+                                        levels = base::unique(OPE_DATE_REALISATION)))
+  
   #---Graphique
   p <- ggplot2::ggplot(data ) +
     
     #points interactifs correspondants aux longueurs de station
     ggiraph::geom_point_interactive(
       ggplot2::aes(
-        x = OPE_ID,
+        x = OPE_DATE_REALISATION,
         y = OPE_LR,
         tooltip = base::paste0(
           "ope_id: ",
@@ -44,7 +49,7 @@ graph_LR_ope <- function(data) {
     ggplot2::theme_bw() +
     ggplot2::labs(
        title = "Comparaison des longueurs de station entre opérations ", 
-       x="Numéro d'opération",
+       x="Date opération",
        y = "Longueur (m)")+
     ggplot2::theme(
       axis.title = ggplot2::element_text(size=16, face="bold"),

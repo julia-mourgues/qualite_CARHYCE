@@ -22,11 +22,11 @@ graph_n_transect<- function(data){
     dplyr::summarise(
       n_tra= dplyr::n_distinct(TRA_ID),
       .groups = "drop") %>% 
-    dplyr::arrange(OPE_ID_NUM) %>% 
+    dplyr::arrange(OPE_DATE_REALISATION) %>% 
     dplyr::mutate(
-      OPE_ID = base::factor(
-        OPE_ID,
-        levels = base::unique(OPE_ID)),
+      OPE_DATE_REALISATION = base::factor(
+        OPE_DATE_REALISATION,
+        levels = base::unique(OPE_DATE_REALISATION)),
       code_pt_prelevement = base::factor(
         code_pt_prelevement,
         levels = base::unique(code_pt_prelevement)),
@@ -47,7 +47,7 @@ graph_n_transect<- function(data){
     #points interactifs correspondants aux nombres de transects
     ggiraph::geom_col_interactive(
       ggplot2::aes(
-        x = OPE_ID,
+        x = OPE_DATE_REALISATION,
         y = n_tra,
         fill = lib_n_tra ,
         tooltip = base::paste0(
@@ -80,7 +80,7 @@ graph_n_transect<- function(data){
     ggplot2::theme_bw() +
     ggplot2::labs(
          title = "Comparaison du nombre de transects entre opérations ", 
-         x="Numéro opération",
+         x="Date opération",
          y = "Nombre de transects",
          fill="Légende")+
     ggplot2::theme(

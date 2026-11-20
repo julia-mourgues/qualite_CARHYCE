@@ -4,6 +4,12 @@
 #'
 graph_colmatage_ope <- function(data) {
   
+  data <- data %>%
+    dplyr::arrange(OPE_DATE_REALISATION) %>% 
+    dplyr::mutate(
+      label_ope = base::factor(
+        label_ope,
+        levels = base::unique(label_ope)))
   
   #--- Graphique
   p <- ggplot(data) +

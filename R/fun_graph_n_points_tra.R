@@ -37,7 +37,7 @@ graph_n_points_tra<- function(data){
            n_min= round(n_theorique*0.8),
            n_max= round(n_theorique*1.2),
            TRA_NUM= base::as.numeric(TRA_NUM)) %>% 
-    dplyr::arrange(OPE_ID_NUM, TRA_NUM) %>% 
+    dplyr::arrange(OPE_DATE_REALISATION, TRA_NUM) %>% 
     dplyr::mutate(
       label = base::factor(
         label,

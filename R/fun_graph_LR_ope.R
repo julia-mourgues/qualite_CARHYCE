@@ -11,8 +11,12 @@ graph_LR_ope <- function(data) {
   
   data <- data %>% 
     arrange(OPE_DATE_REALISATION) %>% 
-    mutate(OPE_DATE_REALISATION= factor(OPE_DATE_REALISATION,
-                                        levels = base::unique(OPE_DATE_REALISATION)))
+    mutate(
+      OPE_ID = factor(
+        OPE_ID,
+        levels = unique(OPE_ID)
+      )
+    )
   
   #---Graphique
   p <- ggplot2::ggplot(data ) +
@@ -20,7 +24,7 @@ graph_LR_ope <- function(data) {
     #points interactifs correspondants aux longueurs de station
     ggiraph::geom_point_interactive(
       ggplot2::aes(
-        x = OPE_DATE_REALISATION,
+        x = OPE_ID,
         y = OPE_LR,
         tooltip = base::paste0(
           "ope_id: ",
@@ -49,7 +53,7 @@ graph_LR_ope <- function(data) {
     ggplot2::theme_bw() +
     ggplot2::labs(
        title = "Comparaison des longueurs de station entre opérations ", 
-       x="Date opération",
+       x="Numéro d'opération",
        y = "Longueur (m)")+
     ggplot2::theme(
       axis.title = ggplot2::element_text(size=16, face="bold"),
@@ -69,9 +73,10 @@ graph_LR_ope <- function(data) {
     ope_na <- data %>%
       dplyr::filter(base::is.na(OPE_LR)) %>%
       dplyr::mutate(
-        pos = base::match(OPE_ID, 
-                          base::levels(
-                          base::factor(data$OPE_ID))),
+        pos = match(
+          OPE_ID,
+          levels(factor(data$OPE_ID))
+        ),
         xmin = pos - 0.2,
         xmax = pos + 0.2
       )%>%

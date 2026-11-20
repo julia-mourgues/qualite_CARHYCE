@@ -24,9 +24,10 @@ graph_n_transect<- function(data){
       .groups = "drop") %>% 
     dplyr::arrange(OPE_DATE_REALISATION) %>% 
     dplyr::mutate(
-      OPE_DATE_REALISATION = base::factor(
-        OPE_DATE_REALISATION,
-        levels = base::unique(OPE_DATE_REALISATION)),
+        OPE_ID = factor(
+          OPE_ID,
+          levels = unique(OPE_ID)
+        ),
       code_pt_prelevement = base::factor(
         code_pt_prelevement,
         levels = base::unique(code_pt_prelevement)),
@@ -47,7 +48,7 @@ graph_n_transect<- function(data){
     #points interactifs correspondants aux nombres de transects
     ggiraph::geom_col_interactive(
       ggplot2::aes(
-        x = OPE_DATE_REALISATION,
+        x = OPE_ID,
         y = n_tra,
         fill = lib_n_tra ,
         tooltip = base::paste0(
@@ -100,9 +101,10 @@ graph_n_transect<- function(data){
     ope_na <- data_filtre %>%
       dplyr::filter(is.na(n_tra)) %>%
       dplyr::mutate(
-        pos = base::match(OPE_ID, 
-                          base::levels(
-                            base::factor(data_filtre$OPE_ID))),
+        pos = match(
+          OPE_ID,
+          levels(factor(data_filtre$OPE_ID))
+        ),
         xmin = pos - 0.2,
         xmax = pos + 0.2
       )%>%

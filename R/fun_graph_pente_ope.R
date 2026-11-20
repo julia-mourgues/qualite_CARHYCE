@@ -10,8 +10,12 @@ graph_pente_ope<- function(data) {
   
   data <- data %>% 
     arrange(OPE_DATE_REALISATION) %>% 
-    mutate(OPE_DATE_REALISATION= factor(OPE_DATE_REALISATION,
-                                        levels = base::unique(OPE_DATE_REALISATION)))
+    mutate(
+      OPE_ID = factor(
+        OPE_ID,
+        levels = unique(OPE_ID)
+      )
+    )
   
   #---Graphique
   p <- ggplot2::ggplot(data ) +
@@ -19,7 +23,7 @@ graph_pente_ope<- function(data) {
     #points interactifs correspondants aux valeurs de pente
     ggiraph::geom_point_interactive(
       ggplot2::aes(
-        x = OPE_DATE_REALISATION,
+        x = OPE_ID,
         y = OPE_PENTE_LIGNE_EAU,
         tooltip = base::paste0(
           "ope_id: ",
@@ -48,7 +52,7 @@ graph_pente_ope<- function(data) {
     ggplot2::theme_bw() +
     ggplot2::labs(
        title = "Comparaison des pentes de ligne d'eau mesurées entre <br> opérations ", 
-       x="Date opération",
+       x="Numéro d'opération",
        y = "Pente (‰)")+
     ggplot2::theme(
       axis.title = ggplot2::element_text(size=16, face="bold"),
@@ -68,9 +72,10 @@ graph_pente_ope<- function(data) {
     ope_na <- data %>%
       dplyr::filter(is.na(OPE_PENTE_LIGNE_EAU)) %>%
       dplyr::mutate(
-        pos = base::match(OPE_ID, 
-                          base::levels(
-                            base::factor(data$OPE_ID))),
+        pos = match(
+          OPE_ID,
+          levels(factor(data$OPE_ID))
+        ),
         xmin = pos - 0.2,
         xmax = pos + 0.2
       )%>%
